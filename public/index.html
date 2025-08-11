@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>MTKNeuralToolkit.jl | MTKNeuralToolkit</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="Computational Neural Network Modeling in Julia">
+    <meta name="generator" content="Hugo 0.148.2">
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+
+    
+
+
+    
+      
+
+    
+
+    
+    
+      <link href="/index.xml" rel="alternate" type="application/rss+xml" title="MTKNeuralToolkit" />
+      <link href="/index.xml" rel="feed" type="application/rss+xml" title="MTKNeuralToolkit" />
+      
+    
+
+    
+      <link rel="canonical" href="http://localhost:1313/">
+    
+
+    <meta property="og:url" content="http://localhost:1313/">
+  <meta property="og:site_name" content="MTKNeuralToolkit">
+  <meta property="og:title" content="MTKNeuralToolkit.jl">
+  <meta property="og:description" content="Computational Neural Network Modeling in Julia">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="website">
+
+  <meta itemprop="name" content="MTKNeuralToolkit.jl">
+  <meta itemprop="description" content="Computational Neural Network Modeling in Julia">
+  <meta itemprop="wordCount" content="269">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="MTKNeuralToolkit.jl">
+  <meta name="twitter:description" content="Computational Neural Network Modeling in Julia">
+
+	
+  </head><body class="ma0 avenir bg-near-white development">
+
+    
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        MTKNeuralToolkit
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="" title="Examples page">
+              Examples
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/" title="MTKNeuralToolkit.jl page">
+              MTKNeuralToolkit.jl
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="" title="Reference page">
+              Reference
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="" title="Tutorials page">
+              Tutorials
+            </a>
+          </li>
+          
+        </ul>
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+    <main class="pb7" role="main">
+      
+  <div class="flex-l mt2 mw8 center">
+    <article class="center cf pv5 ph3 ph4-ns mw7">
+      <header>
+        <h1 class="f1">
+          MTKNeuralToolkit.jl
+        </h1>
+      </header>
+      <div class="nested-copy-line-height lh-copy f4 nested-links mid-gray">
+        <h1 id="mtkneuraltoolkitjl">MTKNeuralToolkit.jl</h1>
+<p><a href="https://github.com/your-repo/MTKNeuralToolkit.jl">MTKNeuralToolkit.jl on GitHub</a></p>
+<ol>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#quick-start">Quick Start</a></li>
+<li><a href="#neuron-models">Neuron Models</a></li>
+<li><a href="#synapses">Synapses &amp; Connectivity</a></li>
+<li><a href="#examples">Examples</a></li>
+<li><a href="#api-reference">API Reference</a></li>
+<li><a href="#development">Development Notes</a></li>
+<li><a href="#performance">Performance</a></li>
+<li><a href="#contributing">Contributing</a></li>
+<li><a href="#references">References</a></li>
+</ol>
+<hr>
+<h2 id="installation">Installation</h2>
+<h2 id="quick-start">Quick Start</h2>
+<p>Build a simple two-neuron network:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> MTKNeuralToolkit
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> OrdinaryDiffEq
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> ModelingToolkitStandardLibrary<span style="color:#f92672">.</span>Blocks<span style="color:#f92672">:</span> TimeVaryingFunction
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create neurons</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@named</span> input_stim <span style="color:#f92672">=</span> TimeVaryingFunction(f<span style="color:#f92672">=</span>t <span style="color:#f92672">-&gt;</span> sin(t))
+</span></span><span style="display:flex;"><span>neurons <span style="color:#f92672">=</span> <span style="color:#66d9ef">Dict</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;pre&#34;</span> <span style="color:#f92672">=&gt;</span> build_HH(input_stim; name<span style="color:#f92672">=</span><span style="color:#e6db74">:pre</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;post&#34;</span> <span style="color:#f92672">=&gt;</span> build_HH(; name<span style="color:#f92672">=</span><span style="color:#e6db74">:post</span>)
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Define connections</span>
+</span></span><span style="display:flex;"><span>connections <span style="color:#f92672">=</span> <span style="color:#66d9ef">Dict</span>(
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#34;pre&#34;</span>, <span style="color:#e6db74">&#34;post&#34;</span>) <span style="color:#f92672">=&gt;</span> [(type<span style="color:#f92672">=</span><span style="color:#e6db74">:Exc</span>, weight<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>)]
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Build and simulate</span>
+</span></span><span style="display:flex;"><span>network <span style="color:#f92672">=</span> build_network(connections, neurons)
+</span></span><span style="display:flex;"><span>prob <span style="color:#f92672">=</span> ODEProblem(network, [], (<span style="color:#ae81ff">0.0</span>, <span style="color:#ae81ff">100.0</span>))
+</span></span><span style="display:flex;"><span>sol <span style="color:#f92672">=</span> solve(prob, TRBDF2())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Extract voltages</span>
+</span></span><span style="display:flex;"><span>voltages <span style="color:#f92672">=</span> parse_sol_for_membrane_voltages(sol)
+</span></span></code></pre></div><p><a href="/quickstart/">→ Detailed Quick Start Tutorial</a></p>
+<h2 id="neuron-models">Neuron Models</h2>
+<p>Three main neuron types available:</p>
+<ul>
+<li><strong>Hodgkin-Huxley</strong>: <code>build_HH()</code> - Fast, 4-variable model</li>
+<li><strong>Liu/Prinz</strong>: <code>build_Liu(), build_Prinz()</code> - 8-channel model with calcium dynamics</li>
+<li><strong>IF/LIF</strong>: <code>build_IF(), build_LIF()</code> - Fast, spiking neuron we all love.</li>
+</ul>
+<p>Each model accepts custom configuration and optional input stimuli.</p>
+<p><a href="/neuron-models/">→ Complete Neuron Models Guide</a></p>
+<h2 id="synapses">Synapses &amp; Connectivity</h2>
+<p>Chemical synapses with preset types:</p>
+<ul>
+<li><code>:Exc</code> - Excitatory (E=0mV)</li>
+<li><code>:Inh</code> - Inhibitory (E=-70mV)</li>
+<li><code>:Chol</code> - Cholinergic (E=-80mV)</li>
+<li><code>:Glut</code> - Glutamatergic (E=-70mV)</li>
+</ul>
+<p>Custom synapses supported with user-defined kinetics.</p>
+<p><a href="/synapses/">→ Synapses and Connectivity Guide</a></p>
+<h2 id="examples">Examples</h2>
+<p>Real-world usage examples:</p>
+<ul>
+<li>Single neuron dynamics and channel behavior</li>
+<li>Small networks (2-25 neurons) with specific connectivity</li>
+<li>STG circuit - biological central pattern generator</li>
+<li>Custom components and gap junctions</li>
+</ul>
+<p><a href="/examples/">→ Examples and Use Cases</a></p>
+<h2 id="api-reference">API Reference</h2>
+<p>Complete function documentation:</p>
+<ul>
+<li><strong>Public API</strong>: User-facing functions for building neurons and networks</li>
+<li><strong>Internal API</strong>: Implementation details</li>
+</ul>
+<p><a href="/api-public/">→ Public API Reference</a><br>
+<a href="/api-internal/">→ Internal API Reference</a></p>
+<h2 id="development">Development Notes</h2>
+<p>🚧 <strong>Development Status</strong>: This package is under active development. Features and APIs may change between versions.</p>
+<h2 id="key-considerations-buggy--_-">Key considerations: Buggy -_-'</h2>
+<p><em>Built with <a href="https://github.com/SciML/ModelingToolkit.jl">ModelingToolkit.jl</a> and the Julia scientific computing ecosystem.</em></p>
+
+      </div>
+    </article>
+  </div>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="http://localhost:1313/" >
+    &copy;  MTKNeuralToolkit 2025 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

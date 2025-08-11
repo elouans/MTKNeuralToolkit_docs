@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Neuron Models | MTKNeuralToolkit</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="Detailed guide to HH, Liu, and Prinz neuron models">
+    <meta name="generator" content="Hugo 0.148.2">
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+
+    
+
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="http://localhost:1313/neuron_models/">
+    
+
+    <meta property="og:url" content="http://localhost:1313/neuron_models/">
+  <meta property="og:site_name" content="MTKNeuralToolkit">
+  <meta property="og:title" content="Neuron Models">
+  <meta property="og:description" content="Detailed guide to HH, Liu, and Prinz neuron models">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+
+  <meta itemprop="name" content="Neuron Models">
+  <meta itemprop="description" content="Detailed guide to HH, Liu, and Prinz neuron models">
+  <meta itemprop="wordCount" content="562">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Neuron Models">
+  <meta name="twitter:description" content="Detailed guide to HH, Liu, and Prinz neuron models">
+
+	
+  </head><body class="ma0 avenir bg-near-white development">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        MTKNeuralToolkit
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="" title="Examples page">
+              Examples
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/" title="MTKNeuralToolkit.jl page">
+              MTKNeuralToolkit.jl
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="" title="Reference page">
+              Reference
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="" title="Tutorials page">
+              Tutorials
+            </a>
+          </li>
+          
+        </ul>
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  
+  <article class="flex-l mw8 center ph3 flex-wrap justify-between">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        MTKNeuralToolkit.jl
+      </aside><div id="sharing" class="mt3 ananke-socials"></div>
+<h1 class="f1 athelas mt3 mb1">Neuron Models</h1>
+      
+      
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h1 id="neuron-models">Neuron Models</h1>
+<p>MTKNeuralToolkit natively implements three major neuron model families, each with different levels of biophysical detail and computational requirements:
+Hodgkin-Huxley neurons.
+Liu/Prinz neurons.
+Integrate-and-Fire neurons.</p>
+<p>The intention here is not to cover the extent of what you will be using, but instead to give building blocks and sample code covering a wide enough span of complexity and functionality to allow you to implement your own neuron models. If you only need these natively implemented neurons, then great, your job is much much easier :D.</p>
+<p>That being said:</p>
+<h2 id="hodgkin-huxley-model">Hodgkin-Huxley Model</h2>
+<p>The classic four-variable model with sodium, potassium, and leak conductances. Ideal for learning and fast simulations.</p>
+<h3 id="mathematical-description">Mathematical Description</h3>
+<p><strong>Membrane equation:</strong></p>
+<pre tabindex="0"><code>C dV/dt = -I_Na - I_K - I_leak + I_ext
+</code></pre><p><strong>Channel currents:</strong></p>
+<ul>
+<li><code>I_Na = g_Na * m³ * h * (V - E_Na)</code></li>
+<li><code>I_K = g_K * n⁴ * (V - E_K)</code></li>
+<li><code>I_leak = g_leak * (V - E_leak)</code></li>
+</ul>
+<h3 id="basic-usage">Basic Usage</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># Basic HH neuron</span>
+</span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_HH(; name<span style="color:#f92672">=</span><span style="color:#e6db74">:neuron</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># With custom parameters</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> MTKNeuralToolkit<span style="color:#f92672">.</span>Config
+</span></span><span style="display:flex;"><span>config <span style="color:#f92672">=</span> HHConfig(Na_g<span style="color:#f92672">=</span><span style="color:#ae81ff">120.0</span>, K_g<span style="color:#f92672">=</span><span style="color:#ae81ff">36.0</span>, Leak_g<span style="color:#f92672">=</span><span style="color:#ae81ff">0.3</span>)
+</span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_HH(; name<span style="color:#f92672">=</span><span style="color:#e6db74">:neuron</span>, config<span style="color:#f92672">=</span>config)
+</span></span></code></pre></div><h3 id="with-input-stimulus">With Input Stimulus</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># With time-varying input</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@named</span> stimulus <span style="color:#f92672">=</span> TimeVaryingFunction(f<span style="color:#f92672">=</span>t <span style="color:#f92672">-&gt;</span> <span style="color:#ae81ff">5</span><span style="color:#f92672">*</span>sin(<span style="color:#ae81ff">2</span>π<span style="color:#f92672">*</span>t<span style="color:#f92672">/</span><span style="color:#ae81ff">20</span>))
+</span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_HH(stimulus; name<span style="color:#f92672">=</span><span style="color:#e6db74">:neuron</span>)
+</span></span></code></pre></div><h3 id="default-parameters">Default Parameters</h3>
+<ul>
+<li><strong>Na_g</strong>: 120.0 mS/cm² (sodium conductance)</li>
+<li><strong>K_g</strong>: 36.0 mS/cm² (potassium conductance)</li>
+<li><strong>Leak_g</strong>: 0.3 mS/cm² (leak conductance)</li>
+<li><strong>Na_E</strong>: 50.0 mV, <strong>K_E</strong>: -77.0 mV, <strong>Leak_E</strong>: -54.4 mV</li>
+<li><strong>C</strong>: 1.0 μF/cm² (membrane capacitance)</li>
+</ul>
+<p>All parameters are modifiable via <code>HHConfig()</code>.</p>
+<h2 id="liu-model">Liu Model</h2>
+<p>Eight-channel model with detailed calcium dynamics. Suitable for studies requiring calcium-dependent processes.</p>
+<h3 id="channel-types">Channel Types</h3>
+<ul>
+<li><strong>Na</strong>: Fast sodium (spiking)</li>
+<li><strong>K</strong>: Delayed rectifier potassium</li>
+<li><strong>CaS</strong>: Slow calcium (persistent)</li>
+<li><strong>CaT</strong>: Transient calcium (low-threshold)</li>
+<li><strong>KCa</strong>: Calcium-activated potassium</li>
+<li><strong>H</strong>: Hyperpolarization-activated cation</li>
+<li><strong>Leak</strong>: Passive leak</li>
+</ul>
+<h3 id="calcium-dynamics">Calcium Dynamics</h3>
+<pre tabindex="0"><code>dCa/dt = (1/τ) * (-Ca + Ca∞ + flux_multiplier * I_Ca/C)
+</code></pre><p>Calcium concentration affects KCa channels and calcium reversal potentials.</p>
+<h3 id="usage">Usage</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># Liu neuron with calcium dynamics</span>
+</span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_Liu(; name<span style="color:#f92672">=</span><span style="color:#e6db74">:neuron</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Custom configuration</span>
+</span></span><span style="display:flex;"><span>config <span style="color:#f92672">=</span> LiuConfig(
+</span></span><span style="display:flex;"><span>    CaS_g<span style="color:#f92672">=</span><span style="color:#ae81ff">6.0</span>,     <span style="color:#75715e"># Slow calcium</span>
+</span></span><span style="display:flex;"><span>    CaT_g<span style="color:#f92672">=</span><span style="color:#ae81ff">2.5</span>,     <span style="color:#75715e"># Transient calcium</span>
+</span></span><span style="display:flex;"><span>    KCa_g<span style="color:#f92672">=</span><span style="color:#ae81ff">5.0</span>,     <span style="color:#75715e"># Ca-activated K</span>
+</span></span><span style="display:flex;"><span>    H_g<span style="color:#f92672">=</span><span style="color:#ae81ff">0.01</span>       <span style="color:#75715e"># H-current</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_Liu(; name<span style="color:#f92672">=</span><span style="color:#e6db74">:neuron</span>, config<span style="color:#f92672">=</span>config)
+</span></span></code></pre></div><p><strong>Warning</strong>: Liu models require stiff solvers due to multiple timescales. Use stiff solvers such as TRBDF2() for stability and performance.</p>
+<h2 id="prinz-stg-model">Prinz STG Model</h2>
+<p>Stomatogastric ganglion neuron model optimized for central pattern generator networks. Similar channel complement to Liu but with different kinetics.</p>
+<h3 id="stg-context">STG Context</h3>
+<p>Originally developed for the lobster stomatogastric ganglion, these models excel at producing realistic rhythmic activity in small networks.</p>
+<p><strong>Typical STG neurons:</strong></p>
+<ul>
+<li><strong>AB</strong> (Anterior Burster)</li>
+<li><strong>PD</strong> (Pyloric Dilator)</li>
+<li><strong>LP</strong> (Lateral Pyloric)</li>
+<li><strong>PY</strong> (Pyloric)</li>
+</ul>
+<h3 id="usage-1">Usage</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># Single Prinz neuron</span>
+</span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_Prinz(; name<span style="color:#f92672">=</span><span style="color:#e6db74">:neuron</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># STG-style burster with input</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@named</span> tonic_input <span style="color:#f92672">=</span> TimeVaryingFunction(f<span style="color:#f92672">=</span>t <span style="color:#f92672">-&gt;</span> <span style="color:#ae81ff">1.0</span>)  <span style="color:#75715e"># Constant drive</span>
+</span></span><span style="display:flex;"><span>ab_neuron <span style="color:#f92672">=</span> build_Prinz(tonic_input; name<span style="color:#f92672">=</span><span style="color:#e6db74">:AB</span>)
+</span></span></code></pre></div><h3 id="stg-realistic-configuration">STG-Realistic Configuration</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># Neuron with STG-realistic parameters</span>
+</span></span><span style="display:flex;"><span>config <span style="color:#f92672">=</span> PrinzConfig(
+</span></span><span style="display:flex;"><span>    Na_g<span style="color:#f92672">=</span><span style="color:#ae81ff">100.0</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">159.2</span>,    <span style="color:#75715e"># Scaled conductances</span>
+</span></span><span style="display:flex;"><span>    CaS_g<span style="color:#f92672">=</span><span style="color:#ae81ff">6.0</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">159.2</span>,
+</span></span><span style="display:flex;"><span>    H_g<span style="color:#f92672">=</span><span style="color:#ae81ff">0.01</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">159.2</span>,
+</span></span><span style="display:flex;"><span>    V0<span style="color:#f92672">=-</span><span style="color:#ae81ff">60.0</span>               <span style="color:#75715e"># Resting potential</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_Prinz(; name<span style="color:#f92672">=</span><span style="color:#e6db74">:AB</span>, config<span style="color:#f92672">=</span>config)
+</span></span></code></pre></div><h2 id="custom-configuration">Custom Configuration</h2>
+<p>All neuron types accept configuration structs to modify default parameters:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># Create custom configuration</span>
+</span></span><span style="display:flex;"><span>custom_config <span style="color:#f92672">=</span> PrinzConfig(
+</span></span><span style="display:flex;"><span>    Na_g<span style="color:#f92672">=</span><span style="color:#ae81ff">80.0</span>,           <span style="color:#75715e"># Reduced sodium</span>
+</span></span><span style="display:flex;"><span>    K_g<span style="color:#f92672">=</span><span style="color:#ae81ff">40.0</span>,            <span style="color:#75715e"># Reduced potassium</span>
+</span></span><span style="display:flex;"><span>    CaS_g<span style="color:#f92672">=</span><span style="color:#ae81ff">10.0</span>,          <span style="color:#75715e"># Increased slow calcium</span>
+</span></span><span style="display:flex;"><span>    Leak_g<span style="color:#f92672">=</span><span style="color:#ae81ff">0.05</span>,         <span style="color:#75715e"># Small leak</span>
+</span></span><span style="display:flex;"><span>    C<span style="color:#f92672">=</span><span style="color:#ae81ff">2.0</span>,               <span style="color:#75715e"># Larger capacitance</span>
+</span></span><span style="display:flex;"><span>    V0<span style="color:#f92672">=-</span><span style="color:#ae81ff">70.0</span>             <span style="color:#75715e"># Hyperpolarized rest</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Apply to neuron</span>
+</span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_Prinz(; name<span style="color:#f92672">=</span><span style="color:#e6db74">:custom</span>, config<span style="color:#f92672">=</span>custom_config)
+</span></span></code></pre></div><h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="common-issues">Common Issues</h3>
+<ul>
+<li><strong>Simulation fails to converge</strong>: Switch to TRBDF2 solver for Liu/Prinz models</li>
+<li><strong>Unrealistic spiking behavior</strong>: Check conductance scaling and reversal potentials</li>
+<li><strong>Calcium concentrations explode</strong>: Verify flux_multiplier and tau parameters in calcium dynamics</li>
+</ul>
+<hr>
+<p><strong>Next:</strong> Learn about <a href="/synapses/">synaptic connections</a> to build multi-neuron networks.</p>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="http://localhost:1313/" >
+    &copy;  MTKNeuralToolkit 2025 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

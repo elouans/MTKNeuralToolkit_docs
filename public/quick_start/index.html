@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Quick Start Guide | MTKNeuralToolkit</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="Get started with MTKNeuralToolkit">
+    <meta name="generator" content="Hugo 0.148.2">
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+
+    
+
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="http://localhost:1313/quick_start/">
+    
+
+    <meta property="og:url" content="http://localhost:1313/quick_start/">
+  <meta property="og:site_name" content="MTKNeuralToolkit">
+  <meta property="og:title" content="Quick Start Guide">
+  <meta property="og:description" content="Get started with MTKNeuralToolkit">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+
+  <meta itemprop="name" content="Quick Start Guide">
+  <meta itemprop="description" content="Get started with MTKNeuralToolkit">
+  <meta itemprop="wordCount" content="374">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Quick Start Guide">
+  <meta name="twitter:description" content="Get started with MTKNeuralToolkit">
+
+	
+  </head><body class="ma0 avenir bg-near-white development">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        MTKNeuralToolkit
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="" title="Examples page">
+              Examples
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/" title="MTKNeuralToolkit.jl page">
+              MTKNeuralToolkit.jl
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="" title="Reference page">
+              Reference
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="" title="Tutorials page">
+              Tutorials
+            </a>
+          </li>
+          
+        </ul>
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  
+  <article class="flex-l mw8 center ph3 flex-wrap justify-between">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        MTKNeuralToolkit.jl
+      </aside><div id="sharing" class="mt3 ananke-socials"></div>
+<h1 class="f1 athelas mt3 mb1">Quick Start Guide</h1>
+      
+      
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h1 id="quick-start-guide">Quick Start Guide</h1>
+<p>Get up and running with MTKNeuralToolkit in minutes.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>Julia 1.6+ (1.9+ recommended)</li>
+<li>Basic familiarity with differential equations</li>
+<li>Understanding of neuronal membrane dynamics (helpful but not required)</li>
+</ul>
+<h3 id="optional-background">Optional Background</h3>
+<ul>
+<li>Hodgkin-Huxley formalism</li>
+<li>ModelingToolkit.jl concepts</li>
+<li>OrdinaryDiffEq.jl solving methods</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> Pkg
+</span></span><span style="display:flex;"><span>Pkg<span style="color:#f92672">.</span>add(<span style="color:#e6db74">&#34;MTKNeuralToolkit&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Development dependencies for plotting</span>
+</span></span><span style="display:flex;"><span>Pkg<span style="color:#f92672">.</span>add([<span style="color:#e6db74">&#34;OrdinaryDiffEq&#34;</span>, <span style="color:#e6db74">&#34;Plots&#34;</span>, <span style="color:#e6db74">&#34;ModelingToolkitStandardLibrary&#34;</span>])
+</span></span></code></pre></div><h2 id="your-first-neuron">Your First Neuron</h2>
+<p>Let&rsquo;s create and simulate a single Hodgkin-Huxley neuron:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> MTKNeuralToolkit
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> OrdinaryDiffEq
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> ModelingToolkitStandardLibrary<span style="color:#f92672">.</span>Blocks<span style="color:#f92672">:</span> TimeVaryingFunction
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> Plots
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create input stimulus</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@named</span> stimulus <span style="color:#f92672">=</span> TimeVaryingFunction(f<span style="color:#f92672">=</span>t <span style="color:#f92672">-&gt;</span> sin(t))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Build HH neuron with stimulus</span>
+</span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_HH(stimulus; name<span style="color:#f92672">=</span><span style="color:#e6db74">:neuron</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Simplify the system</span>
+</span></span><span style="display:flex;"><span>neuron_simplified <span style="color:#f92672">=</span> structural_simplify(neuron)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create and solve ODE problem</span>
+</span></span><span style="display:flex;"><span>prob <span style="color:#f92672">=</span> ODEProblem(neuron_simplified, [], (<span style="color:#ae81ff">0.0</span>, <span style="color:#ae81ff">50.0</span>))
+</span></span><span style="display:flex;"><span>sol <span style="color:#f92672">=</span> solve(prob, Tsit5())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Plot membrane voltage</span>
+</span></span><span style="display:flex;"><span>plot(sol, idxs<span style="color:#f92672">=</span>[neuron<span style="color:#f92672">.</span>soma<span style="color:#f92672">.</span>v], xlabel<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Time (ms)&#34;</span>, ylabel<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Voltage (mV)&#34;</span>)
+</span></span></code></pre></div><p>This creates a Hodgkin-Huxley neuron with sinusoidal input current and plots the resulting membrane voltage oscillations.</p>
+<h2 id="building-a-simple-network">Building a Simple Network</h2>
+<p>Create a two-neuron network with synaptic coupling:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># Define neurons</span>
+</span></span><span style="display:flex;"><span>neurons <span style="color:#f92672">=</span> <span style="color:#66d9ef">Dict</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;exciter&#34;</span> <span style="color:#f92672">=&gt;</span> build_HH(stimulus; name<span style="color:#f92672">=</span><span style="color:#e6db74">:exciter</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;target&#34;</span> <span style="color:#f92672">=&gt;</span> build_HH(; name<span style="color:#f92672">=</span><span style="color:#e6db74">:target</span>)
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Define synaptic connections</span>
+</span></span><span style="display:flex;"><span>connections <span style="color:#f92672">=</span> <span style="color:#66d9ef">Dict</span>(
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#34;exciter&#34;</span>, <span style="color:#e6db74">&#34;target&#34;</span>) <span style="color:#f92672">=&gt;</span> [(type<span style="color:#f92672">=</span><span style="color:#e6db74">:Exc</span>, weight<span style="color:#f92672">=</span><span style="color:#ae81ff">0.8</span>)]
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Build network</span>
+</span></span><span style="display:flex;"><span>network <span style="color:#f92672">=</span> build_network(connections, neurons)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Simulate</span>
+</span></span><span style="display:flex;"><span>prob <span style="color:#f92672">=</span> ODEProblem(network, [], (<span style="color:#ae81ff">0.0</span>, <span style="color:#ae81ff">100.0</span>))
+</span></span><span style="display:flex;"><span>sol <span style="color:#f92672">=</span> solve(prob, TRBDF2())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Plot all membrane voltages</span>
+</span></span><span style="display:flex;"><span>voltages <span style="color:#f92672">=</span> parse_sol_for_membrane_voltages(sol)
+</span></span><span style="display:flex;"><span>plot(sol, idxs<span style="color:#f92672">=</span>voltages, labels<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;Exciter&#34;</span> <span style="color:#e6db74">&#34;Target&#34;</span>])
+</span></span></code></pre></div><p>The excitatory synapse (<code>:Exc</code>) allows the driven neuron to influence the target neuron&rsquo;s activity.</p>
+<h2 id="synapse-types">Synapse Types</h2>
+<p>Four common synapse types are available:</p>
+<ul>
+<li><strong><code>:Exc</code></strong> - Excitatory (E=0mV)</li>
+<li><strong><code>:Inh</code></strong> - Inhibitory (E=-70mV)</li>
+<li><strong><code>:Chol</code></strong> - Cholinergic (E=-80mV)</li>
+<li><strong><code>:Glut</code></strong> - Glutamatergic (E=-70mV)</li>
+</ul>
+<h2 id="typical-workflow">Typical Workflow</h2>
+<ol>
+<li><strong>Define inputs</strong>: Create stimulus using <code>TimeVaryingFunction</code></li>
+<li><strong>Build neurons</strong>: Use <code>build_HH()</code>, <code>build_Liu()</code>, or <code>build_Prinz()</code></li>
+<li><strong>Define connectivity</strong>: Create connections dictionary</li>
+<li><strong>Assemble network</strong>: Call <code>build_network()</code></li>
+<li><strong>Create ODE problem</strong>: Use <code>ODEProblem()</code></li>
+<li><strong>Solve</strong>: Choose appropriate solver (Tsit5 for HH, TRBDF2 for Liu/Prinz)</li>
+<li><strong>Extract results</strong>: Use <code>parse_sol_for_membrane_voltages()</code></li>
+</ol>
+<h2 id="example-configuring-neuron-parameters">Example: Configuring Neuron Parameters</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># Custom HH neuron parameters</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> MTKNeuralToolkit<span style="color:#f92672">.</span>Config
+</span></span><span style="display:flex;"><span>config <span style="color:#f92672">=</span> HHConfig(
+</span></span><span style="display:flex;"><span>    Na_g<span style="color:#f92672">=</span><span style="color:#ae81ff">120.0</span>,    <span style="color:#75715e"># Sodium conductance</span>
+</span></span><span style="display:flex;"><span>    K_g<span style="color:#f92672">=</span><span style="color:#ae81ff">36.0</span>,      <span style="color:#75715e"># Potassium conductance</span>
+</span></span><span style="display:flex;"><span>    Leak_g<span style="color:#f92672">=</span><span style="color:#ae81ff">0.3</span>,    <span style="color:#75715e"># Leak conductance</span>
+</span></span><span style="display:flex;"><span>    C<span style="color:#f92672">=</span><span style="color:#ae81ff">1.0</span>          <span style="color:#75715e"># Capacitance</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_HH(stimulus; name<span style="color:#f92672">=</span><span style="color:#e6db74">:custom_neuron</span>, config<span style="color:#f92672">=</span>config)
+</span></span></code></pre></div><h2 id="next-steps">Next Steps</h2>
+<ul>
+<li>Learn about <a href="/neuron-models/">Neuron Models</a> in detail</li>
+<li>Explore <a href="/synapses/">Synapse Types</a> and their parameters</li>
+<li>See <a href="/examples/">Examples</a> for realistic networks</li>
+<li>Check the <a href="/api-public/">API Reference</a> for complete function documentation</li>
+</ul>
+<hr>
+<p><strong>Ready to build more complex networks?</strong> Check out our <a href="/examples/stg/">STG circuit example</a> to see a three-neuron central pattern generator in action.</p>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="http://localhost:1313/" >
+    &copy;  MTKNeuralToolkit 2025 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>
