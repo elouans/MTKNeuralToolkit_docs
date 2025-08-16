@@ -1,1 +1,4 @@
-
+baseURL = "https://elouans.github.io/MTKNeuralToolkit_docs/"
+languageCode = "en-us"
+title = "MTKNeuralToolkit"
+theme = "ananke"
