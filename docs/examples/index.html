@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Examples and Use Cases | MTKNeuralToolkit</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="Real-world examples from single neurons to complex networks">
+    <meta name="generator" content="Hugo 0.148.2">
+    
+    
+    
+      <meta name="robots" content="index, follow">
+    
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.8d048772ae72ab11245a0e296d1f2a36d3e3dd376c6c867394d6cc659c68fc37.css" >
+
+
+
+
+    
+
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="http://example.org/examples/">
+    
+
+    <meta property="og:url" content="http://example.org/examples/">
+  <meta property="og:site_name" content="MTKNeuralToolkit">
+  <meta property="og:title" content="Examples and Use Cases">
+  <meta property="og:description" content="Real-world examples from single neurons to complex networks">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+
+  <meta itemprop="name" content="Examples and Use Cases">
+  <meta itemprop="description" content="Real-world examples from single neurons to complex networks">
+  <meta itemprop="wordCount" content="810">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Examples and Use Cases">
+  <meta name="twitter:description" content="Real-world examples from single neurons to complex networks">
+
+      
+    
+	
+  </head><body class="ma0 avenir bg-near-white production">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        MTKNeuralToolkit
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="" title="Examples page">
+              Examples
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/" title="MTKNeuralToolkit.jl page">
+              MTKNeuralToolkit.jl
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="" title="Reference page">
+              Reference
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="" title="Tutorials page">
+              Tutorials
+            </a>
+          </li>
+          
+        </ul>
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  
+  <article class="flex-l mw8 center ph3 flex-wrap justify-between">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        MTKNeuralToolkit.jl
+      </aside><div id="sharing" class="mt3 ananke-socials"></div>
+<h1 class="f1 athelas mt3 mb1">Examples and Use Cases</h1>
+      
+      
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h1 id="examples-and-use-cases">Examples and Use Cases</h1>
+<p>Real-world examples demonstrating MTKNeuralToolkit capabilities, from single neurons to complex networks.</p>
+<h2 id="example-categories">Example Categories</h2>
+<ul>
+<li><strong><a href="#single-neurons">Single Neuron Models</a></strong>: Basic dynamics and channel behavior</li>
+<li><strong><a href="#small-networks">Small Networks</a></strong>: 2-5 neuron circuits with specific connectivity</li>
+<li><strong><a href="#biological-circuits">Biological Circuits</a></strong>: STG and other well-characterized networks</li>
+<li><strong><a href="#custom-components">Custom Components</a></strong>: Building novel synapse and neuron types</li>
+</ul>
+<hr>
+<h2 id="single-neurons">Single Neurons</h2>
+<h3 id="hodgkin-huxley-dynamics">Hodgkin-Huxley Dynamics</h3>
+<p>Classic model showing action potential generation and channel kinetics.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> MTKNeuralToolkit, OrdinaryDiffEq, Plots
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> ModelingToolkitStandardLibrary<span style="color:#f92672">.</span>Blocks<span style="color:#f92672">:</span> TimeVaryingFunction
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create stimulus and neuron</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@named</span> stimulus <span style="color:#f92672">=</span> TimeVaryingFunction(f<span style="color:#f92672">=</span>t <span style="color:#f92672">-&gt;</span> sin(t))
+</span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_HH(stimulus; name<span style="color:#f92672">=</span><span style="color:#e6db74">:neuron</span>)
+</span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> structural_simplify(neuron)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Simulate</span>
+</span></span><span style="display:flex;"><span>prob <span style="color:#f92672">=</span> ODEProblem(neuron, [], (<span style="color:#ae81ff">0.0</span>, <span style="color:#ae81ff">200.0</span>))
+</span></span><span style="display:flex;"><span>sol <span style="color:#f92672">=</span> solve(prob, Tsit5())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Plot voltage and channel states</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> plot(layout<span style="color:#f92672">=</span>(<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">1</span>), size<span style="color:#f92672">=</span>(<span style="color:#ae81ff">800</span>,<span style="color:#ae81ff">600</span>))
+</span></span><span style="display:flex;"><span>plot!(p, sol, idxs<span style="color:#f92672">=</span>[neuron<span style="color:#f92672">.</span>Na<span style="color:#f92672">.</span>conductance<span style="color:#f92672">.</span>m_gate, neuron<span style="color:#f92672">.</span>Na<span style="color:#f92672">.</span>conductance<span style="color:#f92672">.</span>h_gate], 
+</span></span><span style="display:flex;"><span>      subplot<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Na Channel Gates&#34;</span>)
+</span></span><span style="display:flex;"><span>plot!(p, sol, idxs<span style="color:#f92672">=</span>[neuron<span style="color:#f92672">.</span>K<span style="color:#f92672">.</span>conductance<span style="color:#f92672">.</span>n_gate], 
+</span></span><span style="display:flex;"><span>      subplot<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;K Channel Gate&#34;</span>)  
+</span></span><span style="display:flex;"><span>plot!(p, sol, idxs<span style="color:#f92672">=</span>[neuron<span style="color:#f92672">.</span>soma<span style="color:#f92672">.</span>v], 
+</span></span><span style="display:flex;"><span>      subplot<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Membrane Voltage&#34;</span>)
+</span></span></code></pre></div><p><strong>Key Features:</strong></p>
+<ul>
+<li>Action potential generation</li>
+<li>Na/K channel dynamics</li>
+<li>Phase relationships between gates</li>
+<li>Fast simulation with Tsit5 solver</li>
+</ul>
+<h3 id="liu-model-with-calcium-dynamics">Liu Model with Calcium Dynamics</h3>
+<p>Detailed model showing calcium-dependent processes and multiple channel types.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># Liu neuron with complex stimulus</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@named</span> stimulus <span style="color:#f92672">=</span> TimeVaryingFunction(f<span style="color:#f92672">=</span>t <span style="color:#f92672">-&gt;</span> exp(sin(t)<span style="color:#f92672">*</span>sin(t)))
+</span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_Liu(stimulus; name<span style="color:#f92672">=</span><span style="color:#e6db74">:neuron</span>)
+</span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> structural_simplify(neuron)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Simulate with stiff solver</span>
+</span></span><span style="display:flex;"><span>prob <span style="color:#f92672">=</span> ODEProblem(neuron, [], (<span style="color:#ae81ff">0.0</span>, <span style="color:#ae81ff">400.0</span>))
+</span></span><span style="display:flex;"><span>sol <span style="color:#f92672">=</span> solve(prob, TRBDF2(), maxiters<span style="color:#f92672">=</span><span style="color:#ae81ff">1e9</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Plot comprehensive channel analysis</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> plot(layout<span style="color:#f92672">=</span>(<span style="color:#ae81ff">6</span>,<span style="color:#ae81ff">1</span>), size<span style="color:#f92672">=</span>(<span style="color:#ae81ff">1000</span>,<span style="color:#ae81ff">1200</span>))
+</span></span><span style="display:flex;"><span>plot!(p, sol, idxs<span style="color:#f92672">=</span>[neuron<span style="color:#f92672">.</span>Na<span style="color:#f92672">.</span>conductance<span style="color:#f92672">.</span>m, neuron<span style="color:#f92672">.</span>Na<span style="color:#f92672">.</span>conductance<span style="color:#f92672">.</span>h], 
+</span></span><span style="display:flex;"><span>      subplot<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Na Channel&#34;</span>)
+</span></span><span style="display:flex;"><span>plot!(p, sol, idxs<span style="color:#f92672">=</span>[neuron<span style="color:#f92672">.</span>KCa<span style="color:#f92672">.</span>conductance<span style="color:#f92672">.</span>m], 
+</span></span><span style="display:flex;"><span>      subplot<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Ca-activated K&#34;</span>)
+</span></span><span style="display:flex;"><span>plot!(p, sol, idxs<span style="color:#f92672">=</span>[neuron<span style="color:#f92672">.</span>CaS<span style="color:#f92672">.</span>conductance<span style="color:#f92672">.</span>m, neuron<span style="color:#f92672">.</span>CaS<span style="color:#f92672">.</span>conductance<span style="color:#f92672">.</span>h], 
+</span></span><span style="display:flex;"><span>      subplot<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Slow Ca Channel&#34;</span>)
+</span></span><span style="display:flex;"><span>plot!(p, sol, idxs<span style="color:#f92672">=</span>[neuron<span style="color:#f92672">.</span>soma<span style="color:#f92672">.</span>v], 
+</span></span><span style="display:flex;"><span>      subplot<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>, title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Membrane Voltage&#34;</span>)
+</span></span><span style="display:flex;"><span>plot!(p, sol, idxs<span style="color:#f92672">=</span>[neuron<span style="color:#f92672">.</span>soma<span style="color:#f92672">.</span>Ca], 
+</span></span><span style="display:flex;"><span>      subplot<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>, title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Ca Concentration&#34;</span>)
+</span></span><span style="display:flex;"><span>plot!(p, sol, idxs<span style="color:#f92672">=</span>[neuron<span style="color:#f92672">.</span>soma<span style="color:#f92672">.</span>ca<span style="color:#f92672">.</span>i], 
+</span></span><span style="display:flex;"><span>      subplot<span style="color:#f92672">=</span><span style="color:#ae81ff">6</span>, title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Ca Current&#34;</span>)
+</span></span></code></pre></div><p><strong>Key Features:</strong></p>
+<ul>
+<li>8-channel model complexity</li>
+<li>Calcium dynamics and feedback</li>
+<li>Multiple timescale interactions</li>
+<li>Requires TRBDF2 stiff solver</li>
+</ul>
+<hr>
+<h2 id="small-networks">Small Networks</h2>
+<h3 id="two-neuron-excitatory-coupling">Two-Neuron Excitatory Coupling</h3>
+<p>Demonstrates synaptic transmission and network building basics.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># Create connected HH neurons</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@named</span> stimulus <span style="color:#f92672">=</span> TimeVaryingFunction(f<span style="color:#f92672">=</span>t <span style="color:#f92672">-&gt;</span> sin(t))
+</span></span><span style="display:flex;"><span>neurons <span style="color:#f92672">=</span> <span style="color:#66d9ef">Dict</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;driver&#34;</span> <span style="color:#f92672">=&gt;</span> build_HH(stimulus; name<span style="color:#f92672">=</span><span style="color:#e6db74">:driver</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;follower&#34;</span> <span style="color:#f92672">=&gt;</span> build_HH(; name<span style="color:#f92672">=</span><span style="color:#e6db74">:follower</span>)
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>connections <span style="color:#f92672">=</span> <span style="color:#66d9ef">Dict</span>(
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#34;driver&#34;</span>, <span style="color:#e6db74">&#34;follower&#34;</span>) <span style="color:#f92672">=&gt;</span> [(type<span style="color:#f92672">=</span><span style="color:#e6db74">:Exc</span>, weight<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>)]
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Build and simulate network</span>
+</span></span><span style="display:flex;"><span>network <span style="color:#f92672">=</span> build_network(connections, neurons)
+</span></span><span style="display:flex;"><span>prob <span style="color:#f92672">=</span> ODEProblem(network, [], (<span style="color:#ae81ff">0.0</span>, <span style="color:#ae81ff">100.0</span>))
+</span></span><span style="display:flex;"><span>sol <span style="color:#f92672">=</span> solve(prob, TRBDF2())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Plot both neurons</span>
+</span></span><span style="display:flex;"><span>voltages <span style="color:#f92672">=</span> parse_sol_for_membrane_voltages(sol)
+</span></span><span style="display:flex;"><span>plot(sol, idxs<span style="color:#f92672">=</span>voltages, labels<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;Driver&#34;</span> <span style="color:#e6db74">&#34;Follower&#34;</span>])
+</span></span></code></pre></div><p><strong>Demonstrates:</strong></p>
+<ul>
+<li>Basic network assembly</li>
+<li>Synaptic transmission delays</li>
+<li>Voltage trace extraction</li>
+<li>Connection specification format</li>
+</ul>
+<h3 id="mutual-inhibition-network">Mutual Inhibition Network</h3>
+<p>Two neurons with reciprocal inhibitory connections, showing competitive dynamics.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># Competing inhibitory neurons</span>
+</span></span><span style="display:flex;"><span>neurons <span style="color:#f92672">=</span> <span style="color:#66d9ef">Dict</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;neuron1&#34;</span> <span style="color:#f92672">=&gt;</span> build_Prinz(; name<span style="color:#f92672">=</span><span style="color:#e6db74">:neuron1</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;neuron2&#34;</span> <span style="color:#f92672">=&gt;</span> build_Prinz(; name<span style="color:#f92672">=</span><span style="color:#e6db74">:neuron2</span>)
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>connections <span style="color:#f92672">=</span> <span style="color:#66d9ef">Dict</span>(
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#34;neuron1&#34;</span>, <span style="color:#e6db74">&#34;neuron2&#34;</span>) <span style="color:#f92672">=&gt;</span> [(type<span style="color:#f92672">=</span><span style="color:#e6db74">:Inh</span>, weight<span style="color:#f92672">=</span><span style="color:#ae81ff">2.0</span>)],
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#34;neuron2&#34;</span>, <span style="color:#e6db74">&#34;neuron1&#34;</span>) <span style="color:#f92672">=&gt;</span> [(type<span style="color:#f92672">=</span><span style="color:#e6db74">:Inh</span>, weight<span style="color:#f92672">=</span><span style="color:#ae81ff">2.0</span>)]
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>network <span style="color:#f92672">=</span> build_network(connections, neurons)
+</span></span><span style="display:flex;"><span>prob <span style="color:#f92672">=</span> ODEProblem(network, [], (<span style="color:#ae81ff">0.0</span>, <span style="color:#ae81ff">500.0</span>))
+</span></span><span style="display:flex;"><span>sol <span style="color:#f92672">=</span> solve(prob, TRBDF2())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>voltages <span style="color:#f92672">=</span> parse_sol_for_membrane_voltages(sol)
+</span></span><span style="display:flex;"><span>plot(sol, idxs<span style="color:#f92672">=</span>voltages, labels<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;Neuron 1&#34;</span> <span style="color:#e6db74">&#34;Neuron 2&#34;</span>])
+</span></span></code></pre></div><p><strong>Demonstrates:</strong></p>
+<ul>
+<li>Competitive network dynamics</li>
+<li>Reciprocal inhibition</li>
+<li>Winner-take-all behavior</li>
+<li>Prinz model usage</li>
+</ul>
+<hr>
+<h2 id="biological-circuits">Biological Circuits</h2>
+<h3 id="stomatogastric-ganglion-stg-circuit">Stomatogastric Ganglion (STG) Circuit</h3>
+<p>Three-neuron central pattern generator producing realistic pyloric rhythm.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> MTKNeuralToolkit<span style="color:#f92672">.</span>Config
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># STG neurons with realistic parameters</span>
+</span></span><span style="display:flex;"><span>syn_cf <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.254</span>      <span style="color:#75715e"># Synapse scaling</span>
+</span></span><span style="display:flex;"><span>prinz_cf <span style="color:#f92672">=</span> <span style="color:#ae81ff">159.2</span>    <span style="color:#75715e"># Prinz model scaling</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@named</span> tonic_drive <span style="color:#f92672">=</span> TimeVaryingFunction(f<span style="color:#f92672">=</span>t <span style="color:#f92672">-&gt;</span> <span style="color:#ae81ff">1.0</span>)  <span style="color:#75715e"># Constant input</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>neurons <span style="color:#f92672">=</span> <span style="color:#66d9ef">Dict</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;AB&#34;</span> <span style="color:#f92672">=&gt;</span> build_Prinz(tonic_drive; name<span style="color:#f92672">=</span><span style="color:#e6db74">:AB</span>, config<span style="color:#f92672">=</span>PrinzConfig(
+</span></span><span style="display:flex;"><span>        V0<span style="color:#f92672">=-</span><span style="color:#ae81ff">60.0</span>, Na_g<span style="color:#f92672">=</span><span style="color:#ae81ff">100.0</span><span style="color:#f92672">*</span>prinz_cf, CaS_g<span style="color:#f92672">=</span><span style="color:#ae81ff">6.0</span><span style="color:#f92672">*</span>prinz_cf, 
+</span></span><span style="display:flex;"><span>        CaT_g<span style="color:#f92672">=</span><span style="color:#ae81ff">2.5</span><span style="color:#f92672">*</span>prinz_cf, H_g<span style="color:#f92672">=</span><span style="color:#ae81ff">0.01</span><span style="color:#f92672">*</span>prinz_cf, K_g<span style="color:#f92672">=</span><span style="color:#ae81ff">50.0</span><span style="color:#f92672">*</span>prinz_cf, 
+</span></span><span style="display:flex;"><span>        KCa_g<span style="color:#f92672">=</span><span style="color:#ae81ff">5.0</span><span style="color:#f92672">*</span>prinz_cf, DRK_g<span style="color:#f92672">=</span><span style="color:#ae81ff">100.0</span><span style="color:#f92672">*</span>prinz_cf, Leak_g<span style="color:#f92672">=</span><span style="color:#ae81ff">0.0</span><span style="color:#f92672">*</span>prinz_cf)),
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;PY&#34;</span> <span style="color:#f92672">=&gt;</span> build_Prinz(; name<span style="color:#f92672">=</span><span style="color:#e6db74">:PY</span>, config<span style="color:#f92672">=</span>PrinzConfig(
+</span></span><span style="display:flex;"><span>        V0<span style="color:#f92672">=-</span><span style="color:#ae81ff">55.0</span>, Na_g<span style="color:#f92672">=</span><span style="color:#ae81ff">100.0</span><span style="color:#f92672">*</span>prinz_cf, CaS_g<span style="color:#f92672">=</span><span style="color:#ae81ff">2.0</span><span style="color:#f92672">*</span>prinz_cf, 
+</span></span><span style="display:flex;"><span>        CaT_g<span style="color:#f92672">=</span><span style="color:#ae81ff">2.4</span><span style="color:#f92672">*</span>prinz_cf, H_g<span style="color:#f92672">=</span><span style="color:#ae81ff">0.05</span><span style="color:#f92672">*</span>prinz_cf, K_g<span style="color:#f92672">=</span><span style="color:#ae81ff">50.0</span><span style="color:#f92672">*</span>prinz_cf, 
+</span></span><span style="display:flex;"><span>        KCa_g<span style="color:#f92672">=</span><span style="color:#ae81ff">0.0</span><span style="color:#f92672">*</span>prinz_cf, DRK_g<span style="color:#f92672">=</span><span style="color:#ae81ff">125.0</span><span style="color:#f92672">*</span>prinz_cf, Leak_g<span style="color:#f92672">=</span><span style="color:#ae81ff">0.01</span><span style="color:#f92672">*</span>prinz_cf)),
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;LP&#34;</span> <span style="color:#f92672">=&gt;</span> build_Prinz(; name<span style="color:#f92672">=</span><span style="color:#e6db74">:LP</span>, config<span style="color:#f92672">=</span>PrinzConfig(
+</span></span><span style="display:flex;"><span>        V0<span style="color:#f92672">=-</span><span style="color:#ae81ff">65.0</span>, Na_g<span style="color:#f92672">=</span><span style="color:#ae81ff">100.0</span><span style="color:#f92672">*</span>prinz_cf, CaS_g<span style="color:#f92672">=</span><span style="color:#ae81ff">4.0</span><span style="color:#f92672">*</span>prinz_cf, 
+</span></span><span style="display:flex;"><span>        CaT_g<span style="color:#f92672">=</span><span style="color:#ae81ff">0.0</span><span style="color:#f92672">*</span>prinz_cf, H_g<span style="color:#f92672">=</span><span style="color:#ae81ff">0.05</span><span style="color:#f92672">*</span>prinz_cf, K_g<span style="color:#f92672">=</span><span style="color:#ae81ff">20.0</span><span style="color:#f92672">*</span>prinz_cf, 
+</span></span><span style="display:flex;"><span>        KCa_g<span style="color:#f92672">=</span><span style="color:#ae81ff">0.0</span><span style="color:#f92672">*</span>prinz_cf, DRK_g<span style="color:#f92672">=</span><span style="color:#ae81ff">25.0</span><span style="color:#f92672">*</span>prinz_cf, Leak_g<span style="color:#f92672">=</span><span style="color:#ae81ff">0.03</span><span style="color:#f92672">*</span>prinz_cf))
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># STG connectivity pattern</span>
+</span></span><span style="display:flex;"><span>connections <span style="color:#f92672">=</span> <span style="color:#66d9ef">Dict</span>(
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#34;AB&#34;</span>, <span style="color:#e6db74">&#34;LP&#34;</span>) <span style="color:#f92672">=&gt;</span> [(type<span style="color:#f92672">=</span><span style="color:#e6db74">:Chol</span>, weight<span style="color:#f92672">=</span><span style="color:#ae81ff">30.0</span><span style="color:#f92672">*</span>syn_cf), (type<span style="color:#f92672">=</span><span style="color:#e6db74">:Glut</span>, weight<span style="color:#f92672">=</span><span style="color:#ae81ff">30.0</span><span style="color:#f92672">*</span>syn_cf)],
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#34;AB&#34;</span>, <span style="color:#e6db74">&#34;PY&#34;</span>) <span style="color:#f92672">=&gt;</span> [(type<span style="color:#f92672">=</span><span style="color:#e6db74">:Chol</span>, weight<span style="color:#f92672">=</span><span style="color:#ae81ff">3.0</span><span style="color:#f92672">*</span>syn_cf), (type<span style="color:#f92672">=</span><span style="color:#e6db74">:Glut</span>, weight<span style="color:#f92672">=</span><span style="color:#ae81ff">10.0</span><span style="color:#f92672">*</span>syn_cf)],
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#34;LP&#34;</span>, <span style="color:#e6db74">&#34;AB&#34;</span>) <span style="color:#f92672">=&gt;</span> [(type<span style="color:#f92672">=</span><span style="color:#e6db74">:Glut</span>, weight<span style="color:#f92672">=</span><span style="color:#ae81ff">30.0</span><span style="color:#f92672">*</span>syn_cf)],
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#34;LP&#34;</span>, <span style="color:#e6db74">&#34;PY&#34;</span>) <span style="color:#f92672">=&gt;</span> [(type<span style="color:#f92672">=</span><span style="color:#e6db74">:Glut</span>, weight<span style="color:#f92672">=</span><span style="color:#ae81ff">1.0</span><span style="color:#f92672">*</span>syn_cf)],
+</span></span><span style="display:flex;"><span>    (<span style="color:#e6db74">&#34;PY&#34;</span>, <span style="color:#e6db74">&#34;LP&#34;</span>) <span style="color:#f92672">=&gt;</span> [(type<span style="color:#f92672">=</span><span style="color:#e6db74">:Glut</span>, weight<span style="color:#f92672">=</span><span style="color:#ae81ff">30.0</span><span style="color:#f92672">*</span>syn_cf)]
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>network <span style="color:#f92672">=</span> build_network_split(connections, neurons)
+</span></span><span style="display:flex;"><span>prob <span style="color:#f92672">=</span> ODEProblem(network, [], (<span style="color:#ae81ff">0.0</span>, <span style="color:#ae81ff">100.0</span>))
+</span></span><span style="display:flex;"><span>sol <span style="color:#f92672">=</span> solve(prob, TRBDF2())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>voltages <span style="color:#f92672">=</span> parse_sol_for_membrane_voltages(sol)
+</span></span><span style="display:flex;"><span>plot(sol, idxs<span style="color:#f92672">=</span>voltages, labels<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;AB&#34;</span> <span style="color:#e6db74">&#34;PY&#34;</span> <span style="color:#e6db74">&#34;LP&#34;</span>])
+</span></span></code></pre></div><p><strong>Biological Significance:</strong></p>
+<ul>
+<li>Central pattern generator for rhythmic behavior</li>
+<li>Well-characterized lobster neural circuit</li>
+<li>Multiple synapse types (cholinergic + glutamatergic)</li>
+<li>Realistic conductance scaling</li>
+<li>Demonstrates <code>build_network_split()</code> for performance</li>
+</ul>
+<hr>
+<h2 id="custom-components">Custom Components</h2>
+<h3 id="gap-junction-implementation">Gap Junction Implementation</h3>
+<p>Bidirectional electrical coupling with voltage-dependent gating.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a6e22e">@mtkmodel</span> GapJunction <span style="color:#66d9ef">begin</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@extend</span> v_pre, v_post, i_post, i_pre <span style="color:#f92672">=</span> twoport <span style="color:#f92672">=</span> BiDirectionalTwoPort()
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@parameters</span> <span style="color:#66d9ef">begin</span>
+</span></span><span style="display:flex;"><span>        g_gap, [description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Gap junction conductance&#34;</span>]
+</span></span><span style="display:flex;"><span>        V_threshold <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">20.0</span>, [description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Voltage threshold for gating&#34;</span>]
+</span></span><span style="display:flex;"><span>        k_gate <span style="color:#f92672">=</span> <span style="color:#ae81ff">10.0</span>, [description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Gating sensitivity&#34;</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@equations</span> <span style="color:#66d9ef">begin</span>
+</span></span><span style="display:flex;"><span>        i_post <span style="color:#f92672">~</span> g_gap <span style="color:#f92672">/</span> (<span style="color:#ae81ff">1.0</span> <span style="color:#f92672">+</span> exp(k_gate <span style="color:#f92672">*</span> (abs(v_pre <span style="color:#f92672">-</span> v_post) <span style="color:#f92672">-</span> V_threshold))) <span style="color:#f92672">*</span> (v_pre <span style="color:#f92672">-</span> v_post)
+</span></span><span style="display:flex;"><span>        i_pre <span style="color:#f92672">~</span> <span style="color:#f92672">-</span>i_post
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Usage in network</span>
+</span></span><span style="display:flex;"><span>neurons <span style="color:#f92672">=</span> [build_HH(;name<span style="color:#f92672">=</span><span style="color:#e6db74">:n1</span>), build_HH(;name<span style="color:#f92672">=</span><span style="color:#e6db74">:n2</span>)]
+</span></span><span style="display:flex;"><span>connections <span style="color:#f92672">=</span> <span style="color:#66d9ef">Dict</span>(
+</span></span><span style="display:flex;"><span>    (<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>) <span style="color:#f92672">=&gt;</span> [() <span style="color:#f92672">-&gt;</span> GapJunction(;g_gap<span style="color:#f92672">=</span><span style="color:#ae81ff">30.0</span>, name<span style="color:#f92672">=</span><span style="color:#e6db74">:gap</span>)]
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>network <span style="color:#f92672">=</span> build_network(connections, neurons)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>prob <span style="color:#f92672">=</span> ODEProblem(network, [], (<span style="color:#ae81ff">0.0</span>, <span style="color:#ae81ff">500.0</span>))
+</span></span><span style="display:flex;"><span>sol <span style="color:#f92672">=</span> solve(prob, TRBDF2())
+</span></span></code></pre></div><p><strong>Features:</strong></p>
+<ul>
+<li>Bidirectional current flow</li>
+<li>Voltage-dependent gating</li>
+<li>Custom MTK model definition</li>
+</ul>
+<h3 id="custom-chemical-synapse">Custom Chemical Synapse</h3>
+<p>Modifying synapse parameters for specific applications.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># Custom synapse with specific kinetics</span>
+</span></span><span style="display:flex;"><span>custom_syn <span style="color:#f92672">=</span> put_synapse(
+</span></span><span style="display:flex;"><span>    pre_neuron, post_neuron, <span style="color:#e6db74">:Custom</span>, weight<span style="color:#f92672">=</span><span style="color:#ae81ff">1.5</span>;
+</span></span><span style="display:flex;"><span>    E<span style="color:#f92672">=-</span><span style="color:#ae81ff">65.0</span>,        <span style="color:#75715e"># Intermediate reversal potential</span>
+</span></span><span style="display:flex;"><span>    Vth<span style="color:#f92672">=-</span><span style="color:#ae81ff">30.0</span>,      <span style="color:#75715e"># Lower activation threshold</span>
+</span></span><span style="display:flex;"><span>    k_<span style="color:#f92672">=</span><span style="color:#ae81ff">0.05</span>,        <span style="color:#75715e"># Slower kinetics</span>
+</span></span><span style="display:flex;"><span>    sigma<span style="color:#f92672">=</span><span style="color:#ae81ff">3.0</span>,      <span style="color:#75715e"># Gentler activation curve</span>
+</span></span><span style="display:flex;"><span>    name<span style="color:#f92672">=</span><span style="color:#e6db74">:modulatory_synapse</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><h2 id="example-files-in-repository">Example Files in Repository</h2>
+<p>The MTKNeuralToolkit repository contains several example scripts:</p>
+<ul>
+<li><strong><code>plot_HH.jl</code></strong>: Basic Hodgkin-Huxley neuron simulation</li>
+<li><strong><code>plot_Liu.jl</code></strong>: Detailed Liu model with calcium dynamics</li>
+<li><strong><code>plot_stg.jl</code></strong>: Complete STG circuit implementation</li>
+<li><strong><code>plot_HH_network.jl</code></strong>: Multi-neuron HH network examples</li>
+<li><strong><code>plot_custom_synapse.jl</code></strong>: Gap junction implementation</li>
+<li><strong><code>tests_400hh.jl</code></strong>: Large-scale network performance test</li>
+</ul>
+<hr>
+<p><strong>Ready to explore the API?</strong> Check out the <a href="/api_public/">Public API Reference</a> for complete function documentation.</p>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="http://example.org/" >
+    &copy;  MTKNeuralToolkit 2025 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>
