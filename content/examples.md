@@ -283,4 +283,4 @@ The MTKNeuralToolkit repository contains several example scripts:
 
 ---
 
-**Ready to explore the API?** Check out the [Public API Reference](api_public/) for complete function documentation.
+**Ready to explore the API?** Check out the [Public API Reference](/api_public/) for complete function documentation.

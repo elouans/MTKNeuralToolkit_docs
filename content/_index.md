@@ -56,7 +56,7 @@ sol = solve(prob, TRBDF2())
 voltages = parse_sol_for_membrane_voltages(sol)
 ```
 
-[→ Detailed Quick Start Tutorial](quickstart/)
+[→ Detailed Quick Start Tutorial](quick_start/)
 
 ## Neuron Models {#neuron-models}
 
@@ -68,7 +68,7 @@ Three main neuron types available:
 
 Each model accepts custom configuration and optional input stimuli.
 
-[→ Complete Neuron Models Guide](neuron-models/)
+[→ Complete Neuron Models Guide](neuron_models/)
 
 ## Synapses & Connectivity {#synapses}
 
