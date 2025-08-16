@@ -348,4 +348,4 @@ config = PrinzConfig(V0=-60.0, Na_g=100.0*159.2)
 Vector of valid synapse type symbols: `[:Exc, :Inh, :Chol, :Glut, :Custom]`
 
 
-**Next:** Explore [Internal Functions](/api_internal.md/) for advanced customization and development.
+**Next:** Explore [Internal Functions](api_internal.md/) for advanced customization and development.

@@ -56,7 +56,7 @@ sol = solve(prob, TRBDF2())
 voltages = parse_sol_for_membrane_voltages(sol)
 ```
 
-[→ Detailed Quick Start Tutorial](/quickstart/)
+[→ Detailed Quick Start Tutorial](quickstart/)
 
 ## Neuron Models {#neuron-models}
 
@@ -68,7 +68,7 @@ Three main neuron types available:
 
 Each model accepts custom configuration and optional input stimuli.
 
-[→ Complete Neuron Models Guide](/neuron-models/)
+[→ Complete Neuron Models Guide](neuron-models/)
 
 ## Synapses & Connectivity {#synapses}
 
@@ -80,7 +80,7 @@ Chemical synapses with preset types:
 
 Custom synapses supported with user-defined kinetics.
 
-[→ Synapses and Connectivity Guide](/synapses/)
+[→ Synapses and Connectivity Guide](synapses/)
 
 ## Examples {#examples}
 
@@ -91,7 +91,7 @@ Real-world usage examples:
 - STG circuit - biological central pattern generator
 - Custom components and gap junctions
 
-[→ Examples and Use Cases](/examples/)
+[→ Examples and Use Cases](examples/)
 
 ## API Reference {#api-reference}
 
@@ -100,8 +100,8 @@ Complete function documentation:
 - **Public API**: User-facing functions for building neurons and networks
 - **Internal API**: Implementation details 
 
-[→ Public API Reference](/api-public/)  
-[→ Internal API Reference](/api-internal/)
+[→ Public API Reference](api-public/)  
+[→ Internal API Reference](api-internal/)
 
 ## Development Notes {#development}
 

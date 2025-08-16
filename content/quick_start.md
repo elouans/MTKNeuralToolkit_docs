@@ -128,11 +128,11 @@ neuron = build_HH(stimulus; name=:custom_neuron, config=config)
 
 ## Next Steps
 
-- Learn about [Neuron Models](/neuron-models/) in detail
-- Explore [Synapse Types](/synapses/) and their parameters
-- See [Examples](/examples/) for realistic networks
-- Check the [API Reference](/api-public/) for complete function documentation
+- Learn about [Neuron Models](neuron-models/) in detail
+- Explore [Synapse Types](synapses/) and their parameters
+- See [Examples](examples/) for realistic networks
+- Check the [API Reference](api-public/) for complete function documentation
 
 ---
 
-**Ready to build more complex networks?** Check out our [STG circuit example](/examples/stg/) to see a three-neuron central pattern generator in action.
+**Ready to build more complex networks?** Check out the [STG circuit example](examples/stg/) to see a three-neuron central pattern generator in action.
