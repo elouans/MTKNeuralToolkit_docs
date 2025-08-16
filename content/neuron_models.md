@@ -174,4 +174,4 @@ neuron = build_Prinz(; name=:custom, config=custom_config)
 
 ---
 
-**Next:** Learn about [synaptic connections](/synapses/) to build multi-neuron networks.
+**Next:** Learn about [synaptic connections](./synapses/) to build multi-neuron networks.

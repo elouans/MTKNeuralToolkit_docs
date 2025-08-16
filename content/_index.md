@@ -53,7 +53,7 @@ prob = ODEProblem(network, [], (0.0, 100.0))
 sol = solve(prob, TRBDF2())
 
 # Extract voltages
-voltages = parse_sol_for_membrane_voltages(sol)
+plot(sol)
 ```
 
 [→ Detailed Quick Start Tutorial](quick_start/)

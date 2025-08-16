@@ -296,4 +296,4 @@ This produces realistic pyloric rhythm characteristic of the lobster STG.
 
 ---
 
-**Next:** Explore complete [examples](/examples/) showing these concepts in action.
+**Next:** Explore complete [examples](./examples/) showing these concepts in action.
