@@ -10,20 +10,13 @@ menu: main
 
 [MTKNeuralToolkit.jl on GitHub](https://github.com/your-repo/MTKNeuralToolkit.jl)
 
-1. [Installation](#installation)
-2. [Quick Start](#quick-start)
-3. [Neuron Models](#neuron-models)
-4. [Synapses & Connectivity](#synapses)
-5. [Examples](#examples)
-6. [API Reference](#api-reference)
-7. [Development Notes](#development)
-8. [Performance](#performance)
-9. [Contributing](#contributing)
-10. [References](#references)
+1. [Quick Start](#quick-start)
+2. [Neuron Models](#neuron-models)
+3. [Synapses & Connectivity](#synapses)
+4. [Examples](#examples)
+5. [API Reference](#api-reference)
 
 ---
-
-## Installation {#installation}
 
 
 ## Quick Start {#quick-start}
@@ -49,14 +42,14 @@ connections = Dict(
 
 # Build and simulate
 network = build_network(connections, neurons)
-prob = ODEProblem(network, [], (0.0, 100.0))
-sol = solve(prob, TRBDF2())
+prob = ODEProblem(network, Pair[], (0.0, 100.0))
+sol = solve(prob, Tsit5())
 
 # Extract voltages
 plot(sol)
 ```
 
-[→ Detailed Quick Start Tutorial](quick_start/)
+[→ Quick Start and Installation Tutorial](./quick_start/)
 
 ## Neuron Models {#neuron-models}
 
@@ -68,11 +61,12 @@ Three main neuron types available:
 
 Each model accepts custom configuration and optional input stimuli.
 
-[→ Complete Neuron Models Guide](neuron_models/)
+[→ Complete Neuron Models Guide](./neuron_models/)
 
 ## Synapses & Connectivity {#synapses}
 
 Chemical synapses with preset types:
+
 - `:Exc` - Excitatory (E=0mV)
 - `:Inh` - Inhibitory (E=-70mV)
 - `:Chol` - Cholinergic (E=-80mV)
@@ -80,34 +74,27 @@ Chemical synapses with preset types:
 
 Custom synapses supported with user-defined kinetics.
 
-[→ Synapses and Connectivity Guide](synapses/)
+[→ Synapses and Connectivity Guide](./synapses/)
 
 ## Examples {#examples}
 
 Real-world usage examples:
 
 - Single neuron dynamics and channel behavior
-- Small networks (2-25 neurons) with specific connectivity
+- Small networks (2-50 neurons) with specific connectivity
 - STG circuit - biological central pattern generator
 - Custom components and gap junctions
 
-[→ Examples and Use Cases](examples/)
+[→ Examples and Use Cases](./examples/)
 
 ## API Reference {#api-reference}
 
-Complete function documentation:
 
-- **Public API**: User-facing functions for building neurons and networks
-- **Internal API**: Implementation details 
-
-[→ Public API Reference](api-public/)  
-[→ Internal API Reference](api-internal/)
+[→ Public API Reference](./api_public/)  
 
 ## Development Notes {#development}
 
 🚧 **Development Status**: This package is under active development. Features and APIs may change between versions.
-
-Key considerations: Buggy -_-'
 ---
 
 *Built with [ModelingToolkit.jl](https://github.com/SciML/ModelingToolkit.jl) and the Julia scientific computing ecosystem.*

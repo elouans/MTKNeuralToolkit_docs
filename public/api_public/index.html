@@ -4,9 +4,28 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     
-    <title>Public API Reference | MTKNeuralToolkit</title>
+    <title>MTKNeuralToolkit</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="description" content="Complete reference for user-facing functions">
+    <meta name="description" content="Public API Reference
+Complete reference for all functions intended for direct user interaction. These constitute the stable public API of MTKNeuralToolkit.
+
+Neuron Building Functions
+build_IF
+build_IF(input=nothing; name=:IF)
+
+Build an Integrate-and-Fire neuron with threshold dynamics and reset mechanism.
+Parameters:
+
+input: Optional stimulus (TimeVaryingFunction, Constant, etc.)
+name: Symbol for neuron identification (default: :IF)
+
+Returns: ODESystem representing IF neuron with event-driven spiking
+Implementation Details:
+
+Uses BasicSoma with C=10μF capacitance
+Implements threshold detection and reset mechanism
+
+Example:">
     <meta name="generator" content="Hugo 0.148.2">
     
     
@@ -37,17 +56,32 @@
 
     <meta property="og:url" content="https://elouans.github.io/MTKNeuralToolkit_docs/api_public/">
   <meta property="og:site_name" content="MTKNeuralToolkit">
-  <meta property="og:title" content="Public API Reference">
-  <meta property="og:description" content="Complete reference for user-facing functions">
+  <meta property="og:title" content="MTKNeuralToolkit">
+  <meta property="og:description" content="Public API Reference Complete reference for all functions intended for direct user interaction. These constitute the stable public API of MTKNeuralToolkit.
+Neuron Building Functions build_IF build_IF(input=nothing; name=:IF) Build an Integrate-and-Fire neuron with threshold dynamics and reset mechanism.
+Parameters:
+input: Optional stimulus (TimeVaryingFunction, Constant, etc.) name: Symbol for neuron identification (default: :IF) Returns: ODESystem representing IF neuron with event-driven spiking
+Implementation Details:
+Uses BasicSoma with C=10μF capacitance Implements threshold detection and reset mechanism Example:">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
 
-  <meta itemprop="name" content="Public API Reference">
-  <meta itemprop="description" content="Complete reference for user-facing functions">
-  <meta itemprop="wordCount" content="670">
+  <meta itemprop="name" content="MTKNeuralToolkit">
+  <meta itemprop="description" content="Public API Reference Complete reference for all functions intended for direct user interaction. These constitute the stable public API of MTKNeuralToolkit.
+Neuron Building Functions build_IF build_IF(input=nothing; name=:IF) Build an Integrate-and-Fire neuron with threshold dynamics and reset mechanism.
+Parameters:
+input: Optional stimulus (TimeVaryingFunction, Constant, etc.) name: Symbol for neuron identification (default: :IF) Returns: ODESystem representing IF neuron with event-driven spiking
+Implementation Details:
+Uses BasicSoma with C=10μF capacitance Implements threshold detection and reset mechanism Example:">
+  <meta itemprop="wordCount" content="1190">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Public API Reference">
-  <meta name="twitter:description" content="Complete reference for user-facing functions">
+  <meta name="twitter:title" content="MTKNeuralToolkit">
+  <meta name="twitter:description" content="Public API Reference Complete reference for all functions intended for direct user interaction. These constitute the stable public API of MTKNeuralToolkit.
+Neuron Building Functions build_IF build_IF(input=nothing; name=:IF) Build an Integrate-and-Fire neuron with threshold dynamics and reset mechanism.
+Parameters:
+input: Optional stimulus (TimeVaryingFunction, Constant, etc.) name: Symbol for neuron identification (default: :IF) Returns: ODESystem representing IF neuron with event-driven spiking
+Implementation Details:
+Uses BasicSoma with C=10μF capacitance Implements threshold detection and reset mechanism Example:">
 
       
     
@@ -86,12 +120,6 @@
           </li>
           
           <li class="list f5 f4-ns fw4 dib pr3">
-            <a class="hover-white white-90 no-underline" href="" title="Reference page">
-              Reference
-            </a>
-          </li>
-          
-          <li class="list f5 f4-ns fw4 dib pr3">
             <a class="hover-white white-90 no-underline" href="" title="Tutorials page">
               Tutorials
             </a>
@@ -120,7 +148,7 @@
           
         MTKNeuralToolkit.jl
       </aside><div id="sharing" class="mt3 ananke-socials"></div>
-<h1 class="f1 athelas mt3 mb1">Public API Reference</h1>
+<h1 class="f1 athelas mt3 mb1"></h1>
       
       
       
@@ -132,9 +160,57 @@
 <p>Complete reference for all functions intended for direct user interaction. These constitute the stable public API of MTKNeuralToolkit.</p>
 <hr>
 <h2 id="neuron-building-functions">Neuron Building Functions</h2>
-<h3 id="build_hh"><code>build_HH</code></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>build_HH(input<span style="color:#f92672">=</span>nothing; name<span style="color:#f92672">=</span><span style="color:#e6db74">:soma</span>, config<span style="color:#f92672">=</span>HHConfig())
-</span></span></code></pre></div><p>Build a Hodgkin-Huxley neuron with Na, K, and leak channels.</p>
+<h3 id="build_if"><code>build_IF</code></h3>
+<pre><code>build_IF(input=nothing; name=:IF)
+</code></pre>
+<p>Build an Integrate-and-Fire neuron with threshold dynamics and reset mechanism.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>input</code>: Optional stimulus (TimeVaryingFunction, Constant, etc.)</li>
+<li><code>name</code>: Symbol for neuron identification (default: <code>:IF</code>)</li>
+</ul>
+<p><strong>Returns:</strong> ODESystem representing IF neuron with event-driven spiking</p>
+<p><strong>Implementation Details:</strong></p>
+<ul>
+<li>Uses BasicSoma with C=10μF capacitance</li>
+<li>Implements threshold detection and reset mechanism</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre><code># Basic IF neuron
+neuron = build_IF(; name=:if_neuron)
+
+# With stimulus
+@named stimulus = TimeVaryingFunction(f=t -&gt; ifelse((t &gt; 10) &amp; (t &lt; 20), 100.0, 0.0))
+neuron = build_IF(stimulus; name=:driven_neuron)
+</code></pre>
+<p><strong>Solver Requirement:</strong> Use Rodas5() or other event-aware solvers for proper spike detection</p>
+<hr>
+<h3 id="build_lif"><code>build_LIF</code></h3>
+<pre><code>build_LIF(input=nothing; name=:LIF)
+</code></pre>
+<p>Build a Leaky Integrate-and-Fire neuron with membrane leak current.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>input</code>: Optional stimulus input</li>
+<li><code>name</code>: Symbol for neuron identification (default: <code>:LIF</code>)</li>
+</ul>
+<p><strong>Returns:</strong> ODESystem representing LIF neuron with leak dynamics</p>
+<p><strong>Implementation Details:</strong></p>
+<ul>
+<li>Uses BasicSoma with C=10μF capacitance</li>
+<li>Includes membrane leak for realistic decay dynamics</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre><code># Basic LIF neuron
+neuron = build_LIF(; name=:lif_neuron)
+
+# With input stimulus
+neuron = build_LIF(stimulus; name=:driven_lif)
+</code></pre>
+<p><strong>Use Case:</strong> Large-scale spiking networks, population dynamics</p>
+<hr>
+<h3 id="build_hhinputnothing-namesoma-confighhconfig"><code>build_HH(input=nothing; name=:soma, config=HHConfig())</code></h3>
+<p>Build a Hodgkin-Huxley neuron with Na, K, and leak channels.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>input</code>: Optional stimulus (TimeVaryingFunction, Constant, etc.)</li>
@@ -142,157 +218,186 @@
 <li><code>config</code>: HHConfig struct with channel parameters</li>
 </ul>
 <p><strong>Returns:</strong> ODESystem representing the complete neuron model</p>
+<p><strong>Channel Composition:</strong></p>
+<ul>
+<li>Na channel: Fast sodium with m³h gating</li>
+<li>K channel: Delayed rectifier with n⁴ gating</li>
+<li>Leak channel: Passive conductance</li>
+</ul>
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_HH(stimulus; name<span style="color:#f92672">=</span><span style="color:#e6db74">:neuron1</span>)
-</span></span></code></pre></div><hr>
+<pre><code># Basic HH neuron
+neuron = build_HH(; name=:neuron1)
+
+# With stimulus
+@named stimulus = TimeVaryingFunction(f=t -&gt; sin(t))
+neuron = build_HH(stimulus; name=:driven_neuron)
+
+# With custom parameters
+config = HHConfig(Na_g=120.0, K_g=36.0, C=1.0)
+neuron = build_HH(stimulus; name=:custom_neuron, config=config)
+</code></pre>
+<p><strong>Performance:</strong> Fast simulation with Tsit5() solver</p>
+<hr>
 <h3 id="build_liu"><code>build_Liu</code></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>build_Liu(input<span style="color:#f92672">=</span>nothing; name<span style="color:#f92672">=</span><span style="color:#e6db74">:soma</span>, config<span style="color:#f92672">=</span>LiuConfig())
-</span></span></code></pre></div><p>Build a Liu neuron model with calcium dynamics and 8 channel types.</p>
+<pre><code>build_Liu(input=nothing; name=:soma, config=LiuConfig())
+</code></pre>
+<p>Build a Liu neuron model with calcium dynamics and 8 channel types.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>input</code>: Optional stimulus input</li>
-<li><code>name</code>: Symbol for neuron identification</li>
-<li><code>config</code>: LiuConfig struct with channel parameters</li>
+<li><code>name</code>: Symbol for neuron identification (default: <code>:soma</code>)</li>
+<li><code>config</code>: LiuConfig struct with channel parameters (default: LiuConfig())</li>
 </ul>
 <p><strong>Returns:</strong> ODESystem with calcium-sensitive neuron model</p>
+<p><strong>Channel Composition:</strong></p>
+<ul>
+<li>Na: Fast sodium</li>
+<li>K: Delayed rectifier potassium</li>
+<li>CaS: Slow calcium (persistent)</li>
+<li>CaT: Transient calcium (low-threshold)</li>
+<li>KCa: Calcium-activated potassium</li>
+<li>H: Hyperpolarization-activated cation</li>
+<li>DRK: Delayed rectifier K (additional)</li>
+<li>Leak: Passive conductance</li>
+<li>Uses CalciumSensitiveNeuron soma with C=1μF</li>
+</ul>
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_Liu(; name<span style="color:#f92672">=</span><span style="color:#e6db74">:ca_neuron</span>, config<span style="color:#f92672">=</span>LiuConfig(CaS_g<span style="color:#f92672">=</span><span style="color:#ae81ff">6.0</span>))
-</span></span></code></pre></div><hr>
+<pre><code># Basic Liu neuron
+neuron = build_Liu(; name=:ca_neuron)
+
+# With enhanced calcium channels
+config = LiuConfig(CaS_g=6.0, KCa_g=5.0, H_g=0.01)
+neuron = build_Liu(; name=:enhanced_ca, config=config)
+</code></pre>
+<p><strong>Solver Requirement:</strong> Use TRBDF2() for stiff calcium dynamics</p>
+<hr>
 <h3 id="build_prinz"><code>build_Prinz</code></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>build_Prinz(input<span style="color:#f92672">=</span>nothing; name<span style="color:#f92672">=</span><span style="color:#e6db74">:soma</span>, config<span style="color:#f92672">=</span>PrinzConfig())
-</span></span></code></pre></div><p>Build a Prinz STG neuron model optimized for central pattern generator networks.</p>
+<pre><code>build_Prinz(input=nothing; name=:soma, config=PrinzConfig())
+</code></pre>
+<p>Build a Prinz STG neuron model optimized for central pattern generator networks.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>input</code>: Optional stimulus input</li>
-<li><code>name</code>: Symbol for neuron identification</li>
-<li><code>config</code>: PrinzConfig struct with STG-realistic parameters</li>
+<li><code>name</code>: Symbol for neuron identification (default: <code>:soma</code>)</li>
+<li><code>config</code>: PrinzConfig struct with STG-realistic parameters (default: PrinzConfig())</li>
 </ul>
 <p><strong>Returns:</strong> ODESystem optimized for network simulations</p>
+<p><strong>Channel Composition:</strong> Same as Liu model but with STG-optimized kinetics</p>
+<ul>
+<li>Tuned for realistic bursting behavior</li>
+<li>Optimized for network synchronization</li>
+<li>Uses CalciumSensitiveNeuron soma with configurable C, Ca0, V0</li>
+<li>Scaling factors typically applied (×159.2 for conductances)</li>
+</ul>
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>ab_neuron <span style="color:#f92672">=</span> build_Prinz(drive; name<span style="color:#f92672">=</span><span style="color:#e6db74">:AB</span>, config<span style="color:#f92672">=</span>PrinzConfig(V0<span style="color:#f92672">=-</span><span style="color:#ae81ff">60.0</span>))
-</span></span></code></pre></div><hr>
+<pre><code># STG burster neuron
+@named drive = TimeVaryingFunction(f=t -&gt; 1.0)  # Constant input
+ab_neuron = build_Prinz(drive; name=:AB, config=PrinzConfig(V0=-60.0))
+
+# Network-ready configuration
+prinz_cf = 159.2  # Standard STG scaling
+config = PrinzConfig(
+    Na_g=100.0*prinz_cf, 
+    CaS_g=6.0*prinz_cf, 
+    H_g=0.01*prinz_cf
+)
+neuron = build_Prinz(; name=:STG_neuron, config=config)
+</code></pre>
+<p><strong>Use Case:</strong> Central pattern generators, rhythmic networks</p>
+<hr>
 <h2 id="network-assembly-functions">Network Assembly Functions</h2>
 <h3 id="build_network"><code>build_network</code></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>build_network(connections<span style="color:#f92672">::</span><span style="color:#66d9ef">Dict</span>, neurons<span style="color:#f92672">::</span><span style="color:#66d9ef">Union</span>{<span style="color:#66d9ef">Vector</span>,<span style="color:#66d9ef">Dict</span>})
-</span></span></code></pre></div><p>Assemble a network from neurons and synaptic connections.</p>
+<pre><code>build_network(connections::Dict, neurons::Union{Vector,Dict})
+</code></pre>
+<p>Assemble a network from neurons and synaptic connections.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>connections</code>: Dict mapping (pre, post) tuples to synapse specifications</li>
-<li><code>neurons</code>: Vector or Dict of string-&gt;neuron</li>
+<li><code>neurons</code>: Vector or Dict of string-&gt;neuron mappings</li>
 </ul>
 <p><strong>Returns:</strong> Structurally simplified ODESystem representing the complete network</p>
+<p><strong>Connection Format:</strong></p>
+<pre><code>connections = Dict(
+    (&quot;neuron1&quot;, &quot;neuron2&quot;) =&gt; [(type=:Exc, weight=0.5)],
+    (&quot;neuron2&quot;, &quot;neuron3&quot;) =&gt; [(type=:Inh, weight=1.2), (type=:Chol, weight=0.3)]
+)
+</code></pre>
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>network <span style="color:#f92672">=</span> build_network(connections, neurons)
-</span></span></code></pre></div><p><strong>Performance:</strong> Recommended for networks &lt;50 neurons</p>
-<hr>
-<h3 id="build_network_split"><code>build_network_split</code></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>build_network_split(connections<span style="color:#f92672">::</span><span style="color:#66d9ef">Dict</span>, neurons<span style="color:#f92672">::</span><span style="color:#66d9ef">Union</span>{<span style="color:#66d9ef">Vector</span>,<span style="color:#66d9ef">Dict</span>})
-</span></span></code></pre></div><p>Build network with individual component simplification for possibly better performance.</p>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>connections</code>: Dict mapping (pre, post) tuples to synapse specifications</li>
-<li><code>neurons</code>: Dict of string-&gt;neuron or Vector of neurons</li>
-</ul>
-<p><strong>Returns:</strong> Structurally simplified ODESystem with pre-optimized components</p>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>network <span style="color:#f92672">=</span> build_network_split(connections, neurons)
-</span></span></code></pre></div><hr>
-<h3 id="put_synapse"><code>put_synapse</code></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>put_synapse(pre, post, synapse_type<span style="color:#f92672">::</span><span style="color:#66d9ef">Symbol</span>, weight<span style="color:#f92672">::</span><span style="color:#66d9ef">Float64</span>; kwargs<span style="color:#f92672">...</span>)
-</span></span></code></pre></div><p>Create and connect a synapse between two neurons.</p>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>pre</code>: Presynaptic neuron ODESystem</li>
-<li><code>post</code>: Postsynaptic neuron ODESystem</li>
-<li><code>synapse_type</code>: <code>:Exc</code>, <code>:Inh</code>, <code>:Chol</code>, <code>:Glut</code>, or <code>:Custom</code></li>
-<li><code>weight</code>: Synaptic conductance (positive float)</li>
-<li><code>name</code>: Optional synapse identifier</li>
-<li><code>E</code>, <code>Vth</code>, <code>k_</code>, <code>sigma</code>: Custom parameters for <code>:Custom</code> type</li>
-</ul>
-<p><strong>Returns:</strong> ODESystem with connected synapse</p>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>syn <span style="color:#f92672">=</span> put_synapse(n1, n2, <span style="color:#e6db74">:Exc</span>, <span style="color:#ae81ff">0.5</span>; name<span style="color:#f92672">=</span><span style="color:#e6db74">:connection</span>)
-</span></span></code></pre></div><hr>
-<h2 id="solution-analysis-functions">Solution Analysis Functions</h2>
-<h3 id="parse_sol_for_membrane_voltages"><code>parse_sol_for_membrane_voltages</code></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>parse_sol_for_membrane_voltages(sol<span style="color:#f92672">::</span><span style="color:#66d9ef">ODESolution</span>)
-</span></span></code></pre></div><p>Extract unique membrane voltage traces from network simulation results.</p>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>sol</code>: ODESolution from network simulation</li>
-</ul>
-<p><strong>Returns:</strong> Vector of voltage state variables, one per neuron (avoiding duplicates)</p>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>voltages <span style="color:#f92672">=</span> parse_sol_for_membrane_voltages(sol)
-</span></span><span style="display:flex;"><span>plot(sol, idxs<span style="color:#f92672">=</span>voltages)
-</span></span></code></pre></div><p><strong>Warning:</strong> Handles multiple synapse connections to same neuron correctly</p>
-<hr>
-<h3 id="parse_sol_for_voltage"><code>parse_sol_for_voltage</code></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>parse_sol_for_voltage(state_vars)
-</span></span></code></pre></div><p>Internal helper for voltage extraction from state variable list.</p>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>state_vars</code>: Vector of symbolic variables from ODESystem</li>
-</ul>
-<p><strong>Returns:</strong> Vector of voltage state variables</p>
-<p><strong>Warning:</strong> Typically called by <code>parse_sol_for_membrane_voltages()</code></p>
-<hr>
-<h2 id="debugging-tools">Debugging Tools</h2>
-<h3 id="inspect_network"><code>inspect_network</code></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>inspect_network(prob<span style="color:#f92672">::</span><span style="color:#66d9ef">Union</span>{<span style="color:#66d9ef">ODEProblem</span>,<span style="color:#66d9ef">ODESystem</span>})
-</span></span></code></pre></div><p>Display network structure including neurons and synaptic connections.</p>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>prob</code>: ODEProblem or ODESystem to analyze</li>
-</ul>
-<p><strong>Returns:</strong> NamedTuple with <code>(neurons, neuron_synapses, all_states)</code></p>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>result <span style="color:#f92672">=</span> inspect_network(network)
-</span></span><span style="display:flex;"><span>println(<span style="color:#e6db74">&#34;Neurons: &#34;</span>, length(result<span style="color:#f92672">.</span>neurons))
-</span></span></code></pre></div><p><strong>Use Case:</strong> Debugging network topology and verifying connections</p>
+<pre><code># Define neurons
+neurons = Dict(
+    &quot;driver&quot; =&gt; build_HH(stimulus; name=:driver),
+    &quot;follower&quot; =&gt; build_HH(; name=:follower)
+)
+
+# Define connections
+connections = Dict(
+    (&quot;driver&quot;, &quot;follower&quot;) =&gt; [(type=:Exc, weight=0.8)]
+)
+
+# Build network
+network = build_network(connections, neurons)
+</code></pre>
+<p><strong>Performance:</strong> Recommended for networks &lt;50 neurons</p>
 <hr>
 <h2 id="channel-and-component-building">Channel and Component Building</h2>
-<h3 id="build_channel"><code>build_channel</code></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>build_channel(conductance, reversal; name)
-</span></span></code></pre></div><p>Build ion channel from conductance and reversal potential components.</p>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>conductance</code>: Gate dynamics component (e.g., NaGates, KGates)</li>
-<li><code>reversal</code>: Reversal potential component (e.g., FixedReversal)</li>
-<li><code>name</code>: Symbol for channel identification</li>
-</ul>
-<p><strong>Returns:</strong> ODESystem representing complete ion channel</p>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>na_channel <span style="color:#f92672">=</span> build_channel(HH<span style="color:#f92672">.</span>NaGates(;g<span style="color:#f92672">=</span><span style="color:#ae81ff">120</span>), FixedReversal(;E<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>); name<span style="color:#f92672">=</span><span style="color:#e6db74">:Na</span>)
-</span></span></code></pre></div><hr>
 <h3 id="build_neuron"><code>build_neuron</code></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>build_neuron(soma, input<span style="color:#f92672">=</span>nothing; channels)
-</span></span></code></pre></div><p>Assemble neuron from soma and channel components.</p>
+<pre><code>build_neuron(soma, input=nothing; channels)
+</code></pre>
+<p>Assemble neuron from soma and channel components.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>soma</code>: Neuron soma component (BasicSoma, CalciumSensitiveNeuron)</li>
 <li><code>input</code>: Optional input stimulus</li>
 <li><code>channels</code>: Vector of channel ODESystems</li>
 </ul>
-<p><strong>Returns:</strong> Complete neuron ODESystem</p>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_neuron(soma, stimulus; channels<span style="color:#f92672">=</span>[na_ch, k_ch, leak_ch])
-</span></span></code></pre></div><hr>
-<h3 id="add_synapse"><code>add_synapse</code></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>add_synapse(channel, pre_neuron, post_neuron; debug<span style="color:#f92672">=</span>false)
-</span></span></code></pre></div><p>Connect synapse channel between two neurons.</p>
-<p><strong>Parameters:</strong></p>
+<p><strong>Returns:</strong> Complete neuron ODESystem with proper connectivity</p>
+<p><strong>Connection Logic:</strong></p>
 <ul>
-<li><code>channel</code>: Synapse component</li>
-<li><code>pre_neuron</code>: Presynaptic neuron ODESystem</li>
-<li><code>post_neuron</code>: Postsynaptic neuron ODESystem</li>
-<li><code>debug</code>: Print connection information</li>
+<li>Connects all channels to soma membrane</li>
+<li>Handles calcium flux for calcium-sensitive channels</li>
+<li>Manages input current injection</li>
+<li>Establishes proper grounding</li>
 </ul>
-<p><strong>Returns:</strong> ODESystem with synaptic connection</p>
-<p><strong>Warning:</strong> Lower-level function; prefer <code>put_synapse()</code> for typical use</p>
-<hr>
+<p><strong>Example:</strong></p>
+<pre><code># Build custom neuron
+soma = BasicSoma(; C=1.0, name=:soma)
+channels = [na_channel, k_channel, leak_channel]
+neuron = build_neuron(soma, stimulus; channels=channels)
+</code></pre>
 <h2 id="configuration-structures">Configuration Structures</h2>
-<h3 id="hhconfig"><code>HHConfig</code></h3>
+<h3 id="ifconfig"><code>IFConfig</code></h3>
+<p>Configuration parameters for Integrate-and-Fire neurons.</p>
+<p><strong>Fields:</strong></p>
+<ul>
+<li><code>V_reset</code>: Reset voltage after spike (default: -2.0 mV)</li>
+<li><code>V_th</code>: Spike threshold voltage (default: 10.0 mV)</li>
+<li><code>R</code>: Membrane resistance (default: 1.0 MΩ)</li>
+<li><code>C</code>: Membrane capacitance (default: 10.0 μF)</li>
+<li><code>E</code>: Reversal potential (default: 0.0 mV)</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre><code># Fast-spiking IF neuron
+config = IFConfig(V_th=5.0, V_reset=-5.0, R=0.5, C=5.0)
+neuron = build_IF(; config=config)
+</code></pre>
+<hr>
+<h3 id="lifconfig"><code>LIFConfig</code></h3>
+<p>Configuration parameters for Leaky Integrate-and-Fire neurons.</p>
+<p><strong>Fields:</strong></p>
+<ul>
+<li><code>V_reset</code>: Reset voltage after spike (default: -2.0 mV)</li>
+<li><code>V_th</code>: Spike threshold voltage (default: 10.0 mV)</li>
+<li><code>τ_m</code>: Membrane time constant (default: 1.0 ms)</li>
+<li><code>R</code>: Membrane resistance (default: 1.0 MΩ)</li>
+<li><code>C</code>: Membrane capacitance (default: 10.0 μF)</li>
+<li><code>E</code>: Reversal potential (default: 0.0 mV)</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre><code># Slow, leaky neuron
+config = LIFConfig(τ_m=5.0, V_th=15.0, R=2.0)
+neuron = build_LIF(; config=config)
+</code></pre>
+<hr>
 <p>Configuration parameters for Hodgkin-Huxley neurons.</p>
 <p><strong>Fields:</strong></p>
 <ul>
@@ -301,9 +406,21 @@
 <li><code>C</code>: Membrane capacitance (μF/cm²)</li>
 <li><code>V0</code>: Initial voltage (mV)</li>
 </ul>
+<p><strong>Defaults:</strong></p>
+<pre><code>HHConfig(
+    V0=-65.0,
+    Na_g=120.0, Na_E=50.0,
+    K_g=36.0, K_E=-77.0,
+    Leak_g=0.3, Leak_E=-54.4,
+    C=1.0
+)
+</code></pre>
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>config <span style="color:#f92672">=</span> HHConfig(Na_g<span style="color:#f92672">=</span><span style="color:#ae81ff">120.0</span>, K_g<span style="color:#f92672">=</span><span style="color:#ae81ff">36.0</span>, C<span style="color:#f92672">=</span><span style="color:#ae81ff">1.0</span>)
-</span></span></code></pre></div><hr>
+<pre><code># High-excitability configuration
+config = HHConfig(Na_g=150.0, K_g=30.0, C=0.8)
+neuron = build_HH(; config=config)
+</code></pre>
+<hr>
 <h3 id="liuconfig"><code>LiuConfig</code></h3>
 <p>Configuration parameters for Liu neurons with calcium dynamics.</p>
 <p><strong>Fields:</strong></p>
@@ -313,23 +430,101 @@
 <li>Reversal potentials for all channels</li>
 <li><code>C</code>: Capacitance, <code>V0</code>/<code>Ca0</code>: Initial conditions</li>
 </ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>config <span style="color:#f92672">=</span> LiuConfig(CaS_g<span style="color:#f92672">=</span><span style="color:#ae81ff">6.0</span>, KCa_g<span style="color:#f92672">=</span><span style="color:#ae81ff">5.0</span>, H_g<span style="color:#f92672">=</span><span style="color:#ae81ff">0.01</span>)
-</span></span></code></pre></div><hr>
-<h3 id="prinzconfig"><code>PrinzConfig</code></h3>
-<p>Configuration parameters for Prinz STG neurons.</p>
-<p><strong>Fields:</strong></p>
+<p><strong>Calcium-Specific Parameters:</strong></p>
 <ul>
-<li>Same structure as LiuConfig</li>
-<li>Optimized defaults for STG network simulations</li>
-<li>Scaling factors typically applied (×159.2 for conductances)</li>
+<li><code>Ca0</code>: Initial calcium concentration</li>
+<li>Calcium reversal computed dynamically from Nernst equation</li>
 </ul>
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>config <span style="color:#f92672">=</span> PrinzConfig(V0<span style="color:#f92672">=-</span><span style="color:#ae81ff">60.0</span>, Na_g<span style="color:#f92672">=</span><span style="color:#ae81ff">100.0</span><span style="color:#f92672">*</span><span style="color:#ae81ff">159.2</span>)
-</span></span></code></pre></div><hr>
-<h2 id="type-constants">Type Constants</h2>
+<pre><code># Enhanced calcium dynamics
+config = LiuConfig(
+    CaS_g=8.0,      # Increased slow calcium
+    KCa_g=7.0,      # Enhanced calcium-activated K
+    H_g=0.02,       # Stronger h-current
+    V0=-60.0        # Depolarized rest
+)
+neuron = build_Liu(; config=config)
+</code></pre>
+<hr>
+<h3 id="prinzconfig"><code>PrinzConfig</code></h3>
+<p>Configuration parameters for Prinz STG neurons.</p>
+<p><strong>Fields:</strong> Same structure as LiuConfig with STG-optimized defaults</p>
+<p><strong>STG Scaling:</strong> Typically multiply conductances by 159.2 for realistic STG behavior</p>
+<pre><code>prinz_cf = 159.2
+config = PrinzConfig(
+    V0=-60.0,
+    Na_g=100.0*prinz_cf,
+    CaS_g=6.0*prinz_cf,
+    H_g=0.01*prinz_cf
+)
+</code></pre>
+<p><strong>Neuron-Specific Configurations:</strong></p>
+<pre><code># AB (Anterior Burster) neuron
+ab_config = PrinzConfig(V0=-60.0, H_g=0.01*prinz_cf)
+
+# PY (Pyloric) neuron  
+py_config = PrinzConfig(V0=-55.0, KCa_g=0.0*prinz_cf)
+
+# LP (Lateral Pyloric) neuron
+lp_config = PrinzConfig(V0=-65.0, CaT_g=0.0*prinz_cf)
+</code></pre>
+<hr>
+<h2 id="type-constants-and-validation">Type Constants and Validation</h2>
 <h3 id="synapse_types"><code>SYNAPSE_TYPES</code></h3>
-<p>Vector of valid synapse type symbols: <code>[:Exc, :Inh, :Chol, :Glut, :Custom]</code></p>
+<p>Vector of valid synapse type symbols:</p>
+<pre><code>SYNAPSE_TYPES = [:Exc, :Inh, :Chol, :Glut, :Custom]
+</code></pre>
+<p><strong>Usage in validation:</strong></p>
+<pre><code>is_valid_synapse(synapse_type) = synapse_type in SYNAPSE_TYPES
+</code></pre>
+<hr>
+<h2 id="complete-example-stg-network">Complete Example: STG Network</h2>
+<pre><code>using MTKNeuralToolkit, OrdinaryDiffEq
+using ModelingToolkitStandardLibrary.Blocks: TimeVaryingFunction
+
+# Scaling factors
+syn_cf = 0.254
+prinz_cf = 159.2
+
+# Create tonic drive
+@named tonic_drive = TimeVaryingFunction(f=t -&gt; 1.0)
+
+# Define STG neurons with realistic parameters
+neurons = Dict(
+    &quot;AB&quot; =&gt; build_Prinz(tonic_drive; name=:AB, config=PrinzConfig(
+        V0=-60.0, Na_g=100.0*prinz_cf, CaS_g=6.0*prinz_cf, 
+        H_g=0.01*prinz_cf, K_g=50.0*prinz_cf)),
+    &quot;PY&quot; =&gt; build_Prinz(; name=:PY, config=PrinzConfig(
+        V0=-55.0, Na_g=100.0*prinz_cf, CaS_g=2.0*prinz_cf, 
+        KCa_g=0.0*prinz_cf)),
+    &quot;LP&quot; =&gt; build_Prinz(; name=:LP, config=PrinzConfig(
+        V0=-65.0, Na_g=100.0*prinz_cf, K_g=20.0*prinz_cf, 
+        CaT_g=0.0*prinz_cf))
+)
+
+# STG connectivity pattern
+connections = Dict(
+    (&quot;AB&quot;, &quot;LP&quot;) =&gt; [(type=:Chol, weight=30.0*syn_cf), (type=:Glut, weight=30.0*syn_cf)],
+    (&quot;AB&quot;, &quot;PY&quot;) =&gt; [(type=:Chol, weight=3.0*syn_cf), (type=:Glut, weight=10.0*syn_cf)],
+    (&quot;LP&quot;, &quot;AB&quot;) =&gt; [(type=:Glut, weight=30.0*syn_cf)],
+    (&quot;LP&quot;, &quot;PY&quot;) =&gt; [(type=:Glut, weight=1.0*syn_cf)],
+    (&quot;PY&quot;, &quot;LP&quot;) =&gt; [(type=:Glut, weight=30.0*syn_cf)]
+)
+
+# Build and simulate network
+network = build_network_split(connections, neurons)
+prob = ODEProblem(network, [], (0.0, 100.0))
+sol = solve(prob, TRBDF2())
+
+# Analyze results
+voltages = parse_sol_for_membrane_voltages(sol)
+plot(sol, idxs=voltages, labels=[&quot;AB&quot; &quot;PY&quot; &quot;LP&quot;])
+
+# Network inspection
+result = inspect_network(network)
+println(&quot;STG network: $(length(result.neurons)) neurons&quot;)
+</code></pre>
+<p>This creates a complete three-neuron central pattern generator producing realistic pyloric rhythm dynamics.</p>
 <ul class="pa0">
   
 </ul>

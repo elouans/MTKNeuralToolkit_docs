@@ -208,6 +208,7 @@ STG-style rhythmic network:
 connections = Dict(
     ("AB", "LP") => [(type=:Chol, weight=30.0), (type=:Glut, weight=30.0)],
     ("AB", "PY") => [(type=:Chol, weight=3.0), (type=:Glut, weight=10.0)],
+    ("LP", "AB") => [(type=:Glut, weight=30.0*syn_cf)],
     ("LP", "PY") => [(type=:Glut, weight=1.0)],
     ("PY", "LP") => [(type=:Glut, weight=30.0)]
 )
@@ -223,39 +224,7 @@ Two network building functions are available:
 network = build_network(connections, neurons)
 ```
 - **Good for**: <50 neurons
-- **Process**: Assemble then simplify entire network
-
-### Split Assembly  
-
-```julia
-network = build_network_split(connections, neurons)
-```
-- **Good for**: >50 neurons
-- **Process**: Simplify neurons first, then synapses, then network
-- **Benefit**: Better performance for larger networks
-
-## Debugging Connectivity
-
-### Network Inspection
-
-Examine network structure and connections:
-
-```julia
-# Inspect built network
-result = inspect_network(network)
-println("Neurons: ", length(result.neurons))
-println("Synapses per neuron: ", result.neuron_synapses)
-```
-
-### Voltage Extraction
-
-Extract clean voltage traces (avoids duplicates from multiple connections):
-
-```julia
-# Get one voltage trace per neuron
-voltages = parse_sol_for_membrane_voltages(sol)
-plot(sol, idxs=voltages)
-```
+- **Process**: Assemble then simplify entire net
 
 ## Example: STG Circuit
 
@@ -296,4 +265,4 @@ This produces realistic pyloric rhythm characteristic of the lobster STG.
 
 ---
 
-**Next:** Explore complete [examples](./examples/) showing these concepts in action.
+**Next:** Explore complete [examples](../examples/) showing these concepts in action.

@@ -44,7 +44,7 @@
 
   <meta itemprop="name" content="Neuron Models">
   <meta itemprop="description" content="Detailed guide to HH, Liu, and Prinz neuron models">
-  <meta itemprop="wordCount" content="562">
+  <meta itemprop="wordCount" content="701">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Neuron Models">
   <meta name="twitter:description" content="Detailed guide to HH, Liu, and Prinz neuron models">
@@ -86,12 +86,6 @@
           </li>
           
           <li class="list f5 f4-ns fw4 dib pr3">
-            <a class="hover-white white-90 no-underline" href="" title="Reference page">
-              Reference
-            </a>
-          </li>
-          
-          <li class="list f5 f4-ns fw4 dib pr3">
             <a class="hover-white white-90 no-underline" href="" title="Tutorials page">
               Tutorials
             </a>
@@ -129,15 +123,44 @@
       
     </header>
     <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h1 id="neuron-models">Neuron Models</h1>
-<p>MTKNeuralToolkit natively implements three major neuron model families, each with different levels of biophysical detail and computational requirements:
+<p>MTKNeuralToolkit natively implements four major neuron model families, each with different levels of biophysical detail and computational requirements:
+Integrate-and-Fire and Leaky Integrate-and-Fire neurons.
 Hodgkin-Huxley neurons.
 Liu/Prinz neurons.
 Integrate-and-Fire neurons.</p>
 <p>The intention here is not to cover the extent of what you will be using, but instead to give building blocks and sample code covering a wide enough span of complexity and functionality to allow you to implement your own neuron models. If you only need these natively implemented neurons, then great, your job is much much easier :D.</p>
 <p>That being said:</p>
+<h2 id="integrate-and-fire-models">Integrate-and-Fire Models</h2>
+<p>Computationally efficient spiking neuron models ideal for large-scale network simulations.</p>
+<h3 id="mathematical-description">Mathematical Description</h3>
+<p><strong>Basic IF model:</strong></p>
+<pre tabindex="0"><code>C dV/dt = I_input
+</code></pre><p><strong>LIF model (with leak):</strong></p>
+<pre tabindex="0"><code>τ_m dV/dt = -(V - E_leak) + R*I_input
+</code></pre><p><strong>Threshold dynamics:</strong> When V ≥ V_th → V = V_reset (spike event)</p>
+<h3 id="basic-usage">Basic Usage</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># Basic IF neuron</span>
+</span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_IF(; name<span style="color:#f92672">=</span><span style="color:#e6db74">:if_neuron</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Basic LIF neuron  </span>
+</span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_LIF(; name<span style="color:#f92672">=</span><span style="color:#e6db74">:lif_neuron</span>)
+</span></span></code></pre></div><h3 id="with-input-stimulus">With Input Stimulus</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># Step input current</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@named</span> stimulus <span style="color:#f92672">=</span> TimeVaryingFunction(f<span style="color:#f92672">=</span>t <span style="color:#f92672">-&gt;</span> ifelse((t <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">10</span>) <span style="color:#f92672">&amp;</span> (t <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">20</span>), <span style="color:#ae81ff">100.0</span>, <span style="color:#ae81ff">0.0</span>))
+</span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_IF(stimulus; name<span style="color:#f92672">=</span><span style="color:#e6db74">:driven_neuron</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>prob <span style="color:#f92672">=</span> ODEProblem(neuron, [], (<span style="color:#ae81ff">0.0</span>, <span style="color:#ae81ff">40.0</span>))
+</span></span><span style="display:flex;"><span>sol <span style="color:#f92672">=</span> solve(prob, Rodas5()) 
+</span></span></code></pre></div><h3 id="implementation-details">Implementation Details</h3>
+<ul>
+<li><strong>IF Channel</strong>: E=0, reversal at -65mV</li>
+<li><strong>BasicSoma</strong>: C=10μF capacitance (fixed)</li>
+<li><strong>Event-driven</strong>: Uses continuous events for threshold detection</li>
+<li><strong>No configuration</strong>: Parameters are hardcoded in current implementation - this will be changed in the next update.</li>
+</ul>
 <h2 id="hodgkin-huxley-model">Hodgkin-Huxley Model</h2>
 <p>The classic four-variable model with sodium, potassium, and leak conductances. Ideal for learning and fast simulations.</p>
-<h3 id="mathematical-description">Mathematical Description</h3>
+<h3 id="mathematical-description-1">Mathematical Description</h3>
 <p><strong>Membrane equation:</strong></p>
 <pre tabindex="0"><code>C dV/dt = -I_Na - I_K - I_leak + I_ext
 </code></pre><p><strong>Channel currents:</strong></p>
@@ -146,7 +169,7 @@ Integrate-and-Fire neurons.</p>
 <li><code>I_K = g_K * n⁴ * (V - E_K)</code></li>
 <li><code>I_leak = g_leak * (V - E_leak)</code></li>
 </ul>
-<h3 id="basic-usage">Basic Usage</h3>
+<h3 id="basic-usage-1">Basic Usage</h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># Basic HH neuron</span>
 </span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_HH(; name<span style="color:#f92672">=</span><span style="color:#e6db74">:neuron</span>)
 </span></span><span style="display:flex;"><span>
@@ -154,7 +177,7 @@ Integrate-and-Fire neurons.</p>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> MTKNeuralToolkit<span style="color:#f92672">.</span>Config
 </span></span><span style="display:flex;"><span>config <span style="color:#f92672">=</span> HHConfig(Na_g<span style="color:#f92672">=</span><span style="color:#ae81ff">120.0</span>, K_g<span style="color:#f92672">=</span><span style="color:#ae81ff">36.0</span>, Leak_g<span style="color:#f92672">=</span><span style="color:#ae81ff">0.3</span>)
 </span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_HH(; name<span style="color:#f92672">=</span><span style="color:#e6db74">:neuron</span>, config<span style="color:#f92672">=</span>config)
-</span></span></code></pre></div><h3 id="with-input-stimulus">With Input Stimulus</h3>
+</span></span></code></pre></div><h3 id="with-input-stimulus-1">With Input Stimulus</h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#75715e"># With time-varying input</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">@named</span> stimulus <span style="color:#f92672">=</span> TimeVaryingFunction(f<span style="color:#f92672">=</span>t <span style="color:#f92672">-&gt;</span> <span style="color:#ae81ff">5</span><span style="color:#f92672">*</span>sin(<span style="color:#ae81ff">2</span>π<span style="color:#f92672">*</span>t<span style="color:#f92672">/</span><span style="color:#ae81ff">20</span>))
 </span></span><span style="display:flex;"><span>neuron <span style="color:#f92672">=</span> build_HH(stimulus; name<span style="color:#f92672">=</span><span style="color:#e6db74">:neuron</span>)
@@ -244,7 +267,7 @@ Integrate-and-Fire neurons.</p>
 <li><strong>Calcium concentrations explode</strong>: Verify flux_multiplier and tau parameters in calcium dynamics</li>
 </ul>
 <hr>
-<p><strong>Next:</strong> Learn about <a href="/synapses/">synaptic connections</a> to build multi-neuron networks.</p>
+<p><strong>Next:</strong> Learn about <a href="../synapses/">synaptic connections</a> to build multi-neuron networks.</p>
 <ul class="pa0">
   
 </ul>

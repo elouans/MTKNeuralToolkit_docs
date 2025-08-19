@@ -4,8 +4,6 @@
   <url>
     <loc>https://elouans.github.io/MTKNeuralToolkit_docs/examples/</loc>
   </url><url>
-    <loc>https://elouans.github.io/MTKNeuralToolkit_docs/api_public/</loc>
-  </url><url>
     <loc>https://elouans.github.io/MTKNeuralToolkit_docs/quick_start/</loc>
   </url><url>
     <loc>https://elouans.github.io/MTKNeuralToolkit_docs/neuron_models/</loc>
@@ -13,6 +11,8 @@
     <loc>https://elouans.github.io/MTKNeuralToolkit_docs/synapses/</loc>
   </url><url>
     <loc>https://elouans.github.io/MTKNeuralToolkit_docs/api_internal/</loc>
+  </url><url>
+    <loc>https://elouans.github.io/MTKNeuralToolkit_docs/api_public/</loc>
   </url><url>
     <loc>https://elouans.github.io/MTKNeuralToolkit_docs/categories/</loc>
   </url><url>

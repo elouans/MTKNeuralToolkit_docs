@@ -10,7 +10,8 @@ weight: 20
 
 # Neuron Models
 
-MTKNeuralToolkit natively implements three major neuron model families, each with different levels of biophysical detail and computational requirements:
+MTKNeuralToolkit natively implements four major neuron model families, each with different levels of biophysical detail and computational requirements:
+Integrate-and-Fire and Leaky Integrate-and-Fire neurons.
 Hodgkin-Huxley neurons.
 Liu/Prinz neurons.
 Integrate-and-Fire neurons.
@@ -18,6 +19,52 @@ Integrate-and-Fire neurons.
 The intention here is not to cover the extent of what you will be using, but instead to give building blocks and sample code covering a wide enough span of complexity and functionality to allow you to implement your own neuron models. If you only need these natively implemented neurons, then great, your job is much much easier :D.
 
 That being said:
+
+## Integrate-and-Fire Models
+
+Computationally efficient spiking neuron models ideal for large-scale network simulations.
+
+### Mathematical Description
+
+**Basic IF model:**
+```
+C dV/dt = I_input
+```
+
+**LIF model (with leak):**
+```
+τ_m dV/dt = -(V - E_leak) + R*I_input
+```
+
+**Threshold dynamics:** When V ≥ V_th → V = V_reset (spike event)
+
+### Basic Usage
+
+```julia
+# Basic IF neuron
+neuron = build_IF(; name=:if_neuron)
+
+# Basic LIF neuron  
+neuron = build_LIF(; name=:lif_neuron)
+```
+
+### With Input Stimulus
+
+```julia
+# Step input current
+@named stimulus = TimeVaryingFunction(f=t -> ifelse((t > 10) & (t < 20), 100.0, 0.0))
+neuron = build_IF(stimulus; name=:driven_neuron)
+
+prob = ODEProblem(neuron, [], (0.0, 40.0))
+sol = solve(prob, Rodas5()) 
+```
+
+### Implementation Details
+
+- **IF Channel**: E=0, reversal at -65mV
+- **BasicSoma**: C=10μF capacitance (fixed)
+- **Event-driven**: Uses continuous events for threshold detection
+- **No configuration**: Parameters are hardcoded in current implementation - this will be changed in the next update.
 
 
 ## Hodgkin-Huxley Model
@@ -174,4 +221,4 @@ neuron = build_Prinz(; name=:custom, config=custom_config)
 
 ---
 
-**Next:** Learn about [synaptic connections](./synapses/) to build multi-neuron networks.
+**Next:** Learn about [synaptic connections](../synapses/) to build multi-neuron networks.
