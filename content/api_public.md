@@ -445,4 +445,4 @@ Vector of valid synapse type symbols:
     result = inspect_network(network)
     println("STG network: $(length(result.neurons)) neurons")
 
-This creates a complete three-neuron central pattern generator producing realistic pyloric rhythm dynamics.
+This creates a complete three-neuron central pattern generator that should realistic pyloric rhythm dynamics.

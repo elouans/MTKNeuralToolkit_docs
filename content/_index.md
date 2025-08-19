@@ -8,7 +8,7 @@ menu: main
 
 # MTKNeuralToolkit.jl
 
-[MTKNeuralToolkit.jl on GitHub](https://github.com/your-repo/MTKNeuralToolkit.jl)
+[MTKNeuralToolkit.jl on GitHub](https://github.com/VRaman-Lab/MTKNeuralToolkit)
 
 1. [Quick Start](#quick-start)
 2. [Neuron Models](#neuron-models)
